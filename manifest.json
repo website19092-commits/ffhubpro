@@ -1,0 +1,33 @@
+{
+  "name": "FF HUB PRO — Free Fire Sensitivity",
+  "short_name": "FF HUB PRO",
+  "description": "Free Fire MAX sensitivity, DPI calculator, and free download files.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#050208",
+  "theme_color": "#CC0000",
+  "lang": "bn",
+  "categories": ["games", "utilities"],
+  "icons": [
+    {
+      "src": "https://i.postimg.cc/fRsQ9XRP/f3fdd85fbe04992687d23e9334d7c71f-(1).jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "https://i.postimg.cc/fRsQ9XRP/f3fdd85fbe04992687d23e9334d7c71f-(1).jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "https://i.postimg.cc/fRsQ9XRP/f3fdd85fbe04992687d23e9334d7c71f-(1).jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#050208">
+<title>Admin Panel — FF HUB PRO</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#050208;--red:#CC0000;--red2:#FF1A00;
+  --gold:#FFD700;--gold2:#FFB800;
+  --cyan:#00D4FF;--green:#00CC55;
+  --text:#F6F1FF;--muted:#948AA8;
+  --line:rgba(255,255,255,.10);--line-gold:rgba(255,215,0,.22);
+  --font-h:'Orbitron',sans-serif;--font-b:'Rajdhani',sans-serif;--font-t:'Inter',sans-serif;
+}
+html,body{width:100%;min-height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-t);overflow-x:hidden;position:relative;-webkit-user-select:none;-webkit-touch-callout:none}
+img{display:block;max-width:100%;pointer-events:none;-webkit-user-drag:none}
+button,input,select,textarea{font-family:inherit;outline:none;border:none}
+a{text-decoration:none;color:inherit}
+.hidden{display:none !important}
+input,textarea{-webkit-user-select:text;user-select:text}
+
+body::before,body::after{content:'';position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+body::before{width:340px;height:340px;background:rgba(204,0,0,.35);top:-140px;left:-120px;animation:glowFloat 10s ease-in-out infinite}
+body::after{width:320px;height:320px;background:rgba(255,215,0,.14);bottom:-140px;right:-120px;animation:glowFloat 12s ease-in-out infinite reverse}
+@keyframes glowFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,40px) scale(1.15)}}
+
+#loginScreen{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:26px;background:var(--bg)}
+.login-card{width:100%;max-width:400px;background:linear-gradient(160deg,rgba(255,26,0,.14),rgba(255,215,0,.06));border:1px solid rgba(255,26,0,.4);border-radius:20px;padding:30px 24px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 60px rgba(204,0,0,.18);animation:fadeUp .5s ease both;position:relative;z-index:2}
+.login-icon{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,#CC0000,#FF1A00);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 18px;box-shadow:0 0 32px rgba(255,26,0,.65);animation:pulseLock 2s ease-in-out infinite}
+@keyframes pulseLock{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.login-title{font-family:var(--font-h);font-weight:900;font-size:16px;letter-spacing:2px;color:#fff;margin-bottom:6px}
+.login-sub{font-family:var(--font-b);font-size:13.5px;color:var(--muted);letter-spacing:1px;margin-bottom:22px}
+.login-input{width:100%;padding:15px 18px;border-radius:13px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:15px;text-align:center;letter-spacing:1px;transition:.2s}
+.login-input:focus{border-color:var(--red2);box-shadow:0 0 0 3px rgba(255,26,0,.15)}
+.login-btn{width:100%;padding:15px;border-radius:13px;background:linear-gradient(135deg,#CC0000,#FF1A00);color:#fff;font-family:var(--font-b);font-weight:700;font-size:17px;cursor:pointer;margin-top:14px;box-shadow:0 8px 26px rgba(204,0,0,.4);transition:transform .14s}
+.login-btn:active{transform:scale(.96)}
+.login-hint{margin-top:16px;font-family:var(--font-b);font-size:12px;color:var(--muted)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+#adminApp{min-height:100vh;position:relative;z-index:1}
+.admin-topbar{position:sticky;top:0;z-index:60;background:rgba(5,2,8,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,215,0,.14);height:60px;display:flex;align-items:center}
+.topbar-in{width:100%;max-width:1400px;margin:0 auto;padding:0 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tb-left{display:flex;align-items:center;gap:12px;min-width:0}
+.tb-menu-btn{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tb-brand{font-family:var(--font-h);font-weight:800;font-size:14px;letter-spacing:1px;background:linear-gradient(90deg,#FFD700,#FF1A00);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+.tb-badge{font-family:var(--font-b);font-size:10px;font-weight:800;color:#fff;background:linear-gradient(135deg,#CC0000,#FF1A00);padding:3px 9px;border-radius:6px;letter-spacing:1.2px;margin-left:6px}
+.tb-right{display:flex;align-items:center;gap:8px}
+.tb-logout{padding:8px 14px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:#fff;font-family:var(--font-b);font-weight:700;font-size:13px;cursor:pointer}
+
+.admin-sidebar{position:fixed;top:0;left:0;bottom:0;width:270px;background:#08030D;border-right:1px solid rgba(255,215,0,.14);z-index:200;padding:20px 14px;transform:translateX(-100%);transition:transform .3s cubic-bezier(.2,.8,.3,1);display:flex;flex-direction:column;overflow-y:auto}
+.admin-sidebar.open{transform:translateX(0)}
+.sb-header{display:flex;align-items:center;justify-content:space-between;padding:0 4px 16px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:16px}
+.sb-title{font-family:var(--font-h);font-size:13px;font-weight:800;color:#fff;letter-spacing:1.2px}
+.sb-close{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sb-nav{display:flex;flex-direction:column;gap:6px;flex:1}
+.sb-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:11px;color:var(--muted);font-family:var(--font-b);font-weight:600;font-size:15px;cursor:pointer;transition:.18s;border:1px solid transparent}
+.sb-item:hover{background:rgba(255,215,0,.06);color:#fff}
+.sb-item.active{background:linear-gradient(135deg,rgba(204,0,0,.28),rgba(255,26,0,.14));border-color:rgba(255,26,0,.4);color:#fff}
+.sb-item .sb-ico{width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.sb-item.logout{color:#FF6666;margin-top:12px;border-top:1px solid rgba(255,255,255,.06);padding-top:16px;border-radius:0}
+
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:150;opacity:0;pointer-events:none;transition:.3s}
+.scrim.open{opacity:1;pointer-events:all}
+
+.admin-main{max-width:1400px;margin:0 auto;padding:20px 16px 60px}
+.page-title{font-family:var(--font-h);font-size:18px;font-weight:800;letter-spacing:1.5px;color:#fff;margin-bottom:6px}
+.page-sub{font-family:var(--font-b);font-size:13px;color:var(--muted);margin-bottom:22px}
+
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:22px}
+@media(min-width:600px){.stats-grid{grid-template-columns:repeat(4,1fr)}}
+.stat-card{background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:16px;padding:16px 14px;display:flex;align-items:center;gap:12px}
+.stat-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.stat-ico.red{background:linear-gradient(135deg,rgba(204,0,0,.28),rgba(255,26,0,.15));border:1px solid rgba(255,26,0,.4)}
+.stat-ico.gold{background:linear-gradient(135deg,rgba(255,215,0,.2),rgba(255,184,0,.1));border:1px solid var(--line-gold)}
+.stat-ico.cyan{background:linear-gradient(135deg,rgba(0,212,255,.2),rgba(0,136,204,.1));border:1px solid rgba(0,212,255,.35)}
+.stat-ico.green{background:linear-gradient(135deg,rgba(0,204,85,.2),rgba(0,160,90,.1));border:1px solid rgba(0,204,85,.35)}
+.stat-num{font-family:var(--font-h);font-size:22px;font-weight:900;color:#fff;line-height:1.1}
+.stat-lbl{font-family:var(--font-b);font-size:11.5px;font-weight:600;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-top:2px}
+
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 12px;flex-wrap:wrap}
+.sec-head h3{font-family:var(--font-h);font-size:14px;font-weight:800;color:var(--gold);letter-spacing:1.4px;text-transform:uppercase}
+.search-input{width:100%;max-width:300px;padding:10px 14px;border-radius:10px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:13.5px}
+.search-input:focus{border-color:var(--gold)}
+
+.user-list{display:flex;flex-direction:column;gap:10px}
+.user-row{background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.user-row.banned{opacity:.55;border-color:rgba(255,26,0,.4)}
+.u-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#CC0000,#FF1A00);display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:800;color:#fff;font-size:16px;flex-shrink:0}
+.u-info{flex:1;min-width:140px}
+.u-name{font-family:var(--font-b);font-weight:700;font-size:15px;color:#fff;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.u-badge{font-size:9.5px;font-family:var(--font-h);font-weight:800;padding:2px 7px;border-radius:5px;letter-spacing:.8px}
+.u-badge.banned{background:rgba(255,26,0,.22);color:#FF6666;border:1px solid rgba(255,26,0,.5)}
+.u-badge.active{background:rgba(0,204,85,.18);color:#33DD77;border:1px solid rgba(0,204,85,.45)}
+.u-meta{font-size:11.5px;color:var(--muted);margin-top:3px}
+.u-actions{display:flex;gap:6px;flex-wrap:wrap}
+.u-btn{padding:8px 12px;border-radius:9px;font-family:var(--font-b);font-weight:700;font-size:12.5px;cursor:pointer;border:1px solid transparent;transition:.18s;background:rgba(255,255,255,.05);color:#fff}
+.u-btn:active{transform:scale(.94)}
+.u-btn.ban{background:rgba(255,215,0,.14);color:var(--gold);border-color:rgba(255,215,0,.4)}
+.u-btn.unban{background:rgba(0,204,85,.14);color:#33DD77;border-color:rgba(0,204,85,.4)}
+.u-btn.del{background:rgba(255,26,0,.14);color:#FF6666;border-color:rgba(255,26,0,.4)}
+.u-btn.edit{background:rgba(0,212,255,.14);color:var(--cyan);border-color:rgba(0,212,255,.4)}
+.u-btn.primary{background:linear-gradient(135deg,#CC0000,#FF1A00);color:#fff;border:none;box-shadow:0 6px 20px rgba(204,0,0,.4)}
+
+.dl-list{display:flex;flex-direction:column;gap:10px}
+.dl-card{background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.dl-card.disabled{opacity:.5}
+.dl-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.dl-ico{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#FFD700,#FFB800);display:flex;align-items:center;justify-content:center;font-size:18px;color:#140900;flex-shrink:0}
+.dl-info{flex:1;min-width:0}
+.dl-name{font-family:var(--font-b);font-weight:700;font-size:15px;color:#fff;line-height:1.3;word-break:break-word}
+.dl-desc{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.4;font-style:italic;word-break:break-word}
+.dl-link{font-size:11px;color:var(--muted);margin-top:3px;word-break:break-all}
+.dl-meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.dl-chip{font-family:var(--font-b);font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px}
+.dl-chip.cat-free{background:rgba(0,212,255,.18);color:var(--cyan);border:1px solid rgba(0,212,255,.4)}
+.dl-chip.cat-paid{background:rgba(255,26,0,.18);color:#FF6666;border:1px solid rgba(255,26,0,.4)}
+.dl-chip.status-on{background:rgba(0,204,85,.18);color:#33DD77;border:1px solid rgba(0,204,85,.4)}
+.dl-chip.status-off{background:rgba(148,138,168,.18);color:var(--muted);border:1px solid rgba(148,138,168,.35)}
+.dl-chip.clicks{background:rgba(255,215,0,.16);color:var(--gold);border:1px solid rgba(255,215,0,.4)}
+.dl-chip.pwd{background:rgba(255,26,0,.2);color:#FF8877;border:1px solid rgba(255,26,0,.5)}
+.dl-chip.nopwd{background:rgba(148,138,168,.14);color:#AAA;border:1px solid rgba(148,138,168,.3)}
+.dl-chip.has-desc{background:rgba(0,212,255,.15);color:var(--cyan);border:1px solid rgba(0,212,255,.35)}
+.dl-actions{display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.06);padding-top:10px}
+.dl-actions .u-btn{flex:1;min-width:80px;text-align:center}
+
+.order-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.of-btn{padding:9px 16px;border-radius:10px;font-family:var(--font-b);font-weight:700;font-size:13px;cursor:pointer;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:var(--muted)}
+.of-btn.active{background:linear-gradient(135deg,rgba(204,0,0,.28),rgba(255,26,0,.14));border-color:rgba(255,26,0,.5);color:#fff}
+.of-btn .of-count{display:inline-block;margin-left:6px;font-family:var(--font-h);font-size:10.5px;background:rgba(0,0,0,.4);padding:1px 6px;border-radius:6px}
+
+.order-list{display:flex;flex-direction:column;gap:10px}
+.order-card{background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:14px;padding:14px 16px;border-left:3px solid var(--gold)}
+.order-card.approved{border-left-color:var(--green)}
+.order-card.rejected{border-left-color:var(--red2);opacity:.7}
+.oc-top{display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.oc-user{font-family:var(--font-b);font-weight:800;font-size:15.5px;color:#fff;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.oc-status{font-family:var(--font-h);font-size:10px;font-weight:800;padding:4px 9px;border-radius:7px;letter-spacing:1px}
+.oc-status.pending{background:rgba(255,215,0,.18);color:var(--gold);border:1px solid rgba(255,215,0,.5)}
+.oc-status.approved{background:rgba(0,204,85,.18);color:#33DD77;border:1px solid rgba(0,204,85,.5)}
+.oc-status.rejected{background:rgba(255,26,0,.18);color:#FF6666;border:1px solid rgba(255,26,0,.5)}
+.oc-date{font-size:11px;color:var(--muted)}
+.oc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
+@media(min-width:600px){.oc-grid{grid-template-columns:repeat(4,1fr)}}
+.oc-cell{background:rgba(0,0,0,.3);border-radius:9px;padding:8px 10px}
+.oc-lbl{font-family:var(--font-b);font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-bottom:2px}
+.oc-val{font-family:var(--font-b);font-size:13.5px;font-weight:700;color:#fff;word-break:break-all}
+.oc-actions{display:flex;gap:6px;flex-wrap:wrap;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
+.oc-actions .u-btn{flex:1;min-width:90px}
+
+.ad-slots-list{display:flex;flex-direction:column;gap:12px}
+.ad-slot-card{background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:14px;padding:16px}
+.ad-slot-card.enabled{border-color:rgba(0,204,85,.35);box-shadow:0 0 18px rgba(0,204,85,.08)}
+.ad-slot-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.ad-slot-name{font-family:var(--font-h);font-size:13px;font-weight:800;color:var(--gold);letter-spacing:1.2px}
+.ad-slot-id{font-size:11px;color:var(--muted);background:rgba(0,0,0,.4);padding:3px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.08)}
+.ad-preview{background:rgba(0,0,0,.4);border:1px dashed rgba(255,255,255,.12);border-radius:12px;padding:10px;margin-bottom:12px;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.ad-preview img{max-height:70px;border-radius:8px}
+.ad-preview .ad-preview-title{font-family:var(--font-b);font-weight:700;font-size:14px;color:var(--gold)}
+.ad-preview .ad-preview-empty{font-size:12px;color:var(--muted)}
+.ad-info-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.ad-info{background:rgba(0,0,0,.35);border-radius:8px;padding:7px 11px;font-family:var(--font-b);font-size:12px;color:var(--text)}
+.ad-info b{color:var(--gold);font-weight:800}
+.ad-slot-actions{display:flex;gap:6px;flex-wrap:wrap}
+.ad-slot-actions .u-btn{flex:1;min-width:80px;text-align:center}
+
+.settings-card{background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
+.settings-card h3{font-family:var(--font-h);font-size:13px;font-weight:800;color:var(--gold);letter-spacing:1.2px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.settings-card h3 .ico{font-size:16px}
+
+.media-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:700px){.media-grid{grid-template-columns:repeat(3,1fr)}}
+.media-item{background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center}
+.media-preview{width:100px;height:100px;border-radius:50%;object-fit:cover;margin:0 auto 12px;border:2px solid var(--gold);box-shadow:0 0 20px rgba(255,215,0,.3);background:#0A0510;display:flex;align-items:center;justify-content:center;font-size:40px;overflow:hidden}
+.media-preview.square{border-radius:14px}
+.media-preview img{width:100%;height:100%;object-fit:cover}
+.media-label{font-family:var(--font-h);font-size:12px;font-weight:800;color:#fff;letter-spacing:1.2px;margin-bottom:6px}
+.media-sub{font-size:11.5px;color:var(--muted);margin-bottom:14px}
+
+.form-field{margin-bottom:14px}
+.form-label{display:block;font-family:var(--font-b);font-weight:700;font-size:11.5px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.form-hint{font-size:11px;color:var(--muted);margin-top:4px}
+.form-input{width:100%;padding:12px 14px;border-radius:11px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:14.5px;transition:.18s}
+.form-input:focus{border-color:var(--red2);box-shadow:0 0 0 3px rgba(255,26,0,.12)}
+.form-textarea{width:100%;padding:12px 14px;border-radius:11px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:14.5px;min-height:80px;resize:vertical;font-family:var(--font-t)}
+.form-textarea:focus{border-color:var(--red2);box-shadow:0 0 0 3px rgba(255,26,0,.12)}
+.form-select{width:100%;padding:12px 14px;border-radius:11px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:14.5px;appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 12px) 50%;background-size:6px 6px,6px 6px;background-repeat:no-repeat;padding-right:36px}
+.form-select option{background:#0E0716;color:#fff}
+
+.save-btn{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#CC0000,#FF1A00);color:#fff;font-family:var(--font-b);font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 8px 24px rgba(204,0,0,.4);transition:transform .14s;letter-spacing:.4px;margin-top:6px}
+.save-btn:active{transform:scale(.97)}
+.save-btn.gold{background:linear-gradient(135deg,#FFD700,#FFB800);color:#140900;box-shadow:0 8px 24px rgba(255,184,0,.4)}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);z-index:400;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{width:100%;max-width:480px;background:linear-gradient(160deg,#12061A,#0A0410);border:1px solid rgba(255,26,0,.35);border-radius:20px;padding:22px 20px 20px;box-shadow:0 30px 70px rgba(0,0,0,.7);max-height:90vh;overflow-y:auto;transform:translateY(20px) scale(.96);transition:transform .25s}
+.modal-overlay.open .modal{transform:translateY(0) scale(1)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.08)}
+.modal-title{font-family:var(--font-h);font-size:14px;font-weight:800;color:#fff;letter-spacing:1.2px}
+.modal-close{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.detail-cell{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:10px 12px}
+.detail-lbl{font-family:var(--font-b);font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+.detail-val{font-family:var(--font-b);font-size:14px;font-weight:700;color:#fff;word-break:break-all}
+.detail-cell.wide{grid-column:1/-1}
+
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:11px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08)}
+.toggle-row .tr-lbl{font-family:var(--font-b);font-weight:600;font-size:14px;color:#fff}
+.toggle-row .tr-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.switch{position:relative;width:48px;height:26px;flex-shrink:0;cursor:pointer}
+.switch input{opacity:0;width:0;height:0}
+.switch .slider{position:absolute;inset:0;background:rgba(255,255,255,.14);border-radius:26px;transition:.25s}
+.switch .slider::before{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.25s}
+.switch input:checked + .slider{background:linear-gradient(135deg,#00A55A,#00CC66)}
+.switch input:checked + .slider::before{transform:translateX(22px)}
+
+.modal-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.modal-actions button{flex:1;min-width:110px;padding:14px;border-radius:12px;font-family:var(--font-b);font-weight:700;font-size:15px;cursor:pointer;transition:.15s}
+.btn-cancel{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:#fff}
+.btn-save{background:linear-gradient(135deg,#CC0000,#FF1A00);color:#fff;border:none}
+.btn-approve{background:linear-gradient(135deg,#00A55A,#00CC66);color:#fff;border:none}
+.btn-reject{background:linear-gradient(135deg,#CC0000,#FF1A00);color:#fff;border:none}
+
+.empty-state{padding:32px 20px;text-align:center;font-family:var(--font-b);font-size:14px;color:var(--muted);line-height:1.8;background:rgba(255,255,255,.02);border:1px dashed rgba(255,255,255,.14);border-radius:14px}
+.loader{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(min-width:900px){
+  .admin-sidebar{transform:translateX(0)}
+  .scrim{display:none}
+  .admin-main{margin-left:270px;padding:24px 24px 60px}
+  .tb-menu-btn{display:none}
+}
+
+#toastBox{position:fixed;left:0;right:0;bottom:22px;z-index:1000;display:flex;flex-direction:column;align-items:center;gap:9px;pointer-events:none;padding:0 16px}
+.toast{width:100%;max-width:420px;text-align:center;padding:13px 18px;border-radius:13px;font-family:var(--font-b);font-weight:600;font-size:15px;color:#fff;background:linear-gradient(135deg,rgba(204,0,0,.96),rgba(255,26,0,.96));box-shadow:0 12px 32px rgba(0,0,0,.55);animation:toastIn .28s ease}
+.toast.ok{background:linear-gradient(135deg,rgba(0,160,90,.96),rgba(0,200,110,.96))}
+.toast.info{background:linear-gradient(135deg,rgba(0,136,204,.96),rgba(0,169,224,.96))}
+@keyframes toastIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+
+<body>
+
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-icon">🔐</div>
+    <div class="login-title">ADMIN ACCESS</div>
+    <div class="login-sub">AUTHORIZED PERSONNEL ONLY</div>
+    <input id="adminPass" class="login-input" type="password" placeholder="Enter Admin Password" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <button id="adminLoginBtn" class="login-btn">ENTER PANEL</button>
+    <div class="login-hint">🎯 Enter the admin password to continue</div>
+  </div>
+</div>
+
+<div id="adminApp" class="hidden">
+  <header class="admin-topbar">
+    <div class="topbar-in">
+      <div class="tb-left">
+        <button class="tb-menu-btn" id="menuBtn">☰</button>
+        <div><span class="tb-brand">FF HUB PRO</span><span class="tb-badge">ADMIN</span></div>
+      </div>
+      <div class="tb-right">
+        <button class="tb-logout" id="tbLogoutBtn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="scrim" id="scrim"></div>
+  <aside class="admin-sidebar" id="sidebar">
+    <div class="sb-header"><span class="sb-title">MENU</span><button class="sb-close" id="sbClose">✕</button></div>
+    <nav class="sb-nav">
+      <div class="sb-item active" data-page="dashboard"><span class="sb-ico">📊</span> Dashboard</div>
+      <div class="sb-item" data-page="users"><span class="sb-ico">👥</span> Users</div>
+      <div class="sb-item" data-page="downloads"><span class="sb-ico">📥</span> Downloads</div>
+      <div class="sb-item" data-page="orders"><span class="sb-ico">💳</span> Orders</div>
+      <div class="sb-item" data-page="ads"><span class="sb-ico">📢</span> Ads</div>
+      <div class="sb-item" data-page="media"><span class="sb-ico">🖼️</span> Media</div>
+      <div class="sb-item" data-page="payment"><span class="sb-ico">💰</span> Payment</div>
+      <div class="sb-item" data-page="settings"><span class="sb-ico">⚙️</span> Site Settings</div>
+      <div class="sb-item logout" id="sbLogout"><span class="sb-ico">🚪</span> Logout</div>
+    </nav>
+  </aside>
+
+  <main class="admin-main">
+
+    <div id="page-dashboard" class="page">
+      <div class="page-title">📊 DASHBOARD</div>
+      <div class="page-sub">Overview of your site activity</div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-ico cyan">👥</div><div><div class="stat-num" id="statUsers">—</div><div class="stat-lbl">Total Users</div></div></div>
+        <div class="stat-card"><div class="stat-ico gold">💳</div><div><div class="stat-num" id="statOrders">—</div><div class="stat-lbl">Total Orders</div></div></div>
+        <div class="stat-card"><div class="stat-ico red">⏳</div><div><div class="stat-num" id="statPending">—</div><div class="stat-lbl">Pending</div></div></div>
+        <div class="stat-card"><div class="stat-ico green">📥</div><div><div class="stat-num" id="statClicks">—</div><div class="stat-lbl">Downloads</div></div></div>
+      </div>
+      <div class="sec-head"><h3>⚡ Recent Users</h3></div>
+      <div id="recentUsersBox" class="user-list"><div class="empty-state"><span class="loader"></span> Loading...</div></div>
+    </div>
+
+    <div id="page-users" class="page hidden">
+      <div class="page-title">👥 USERS</div>
+      <div class="page-sub">Manage all registered users</div>
+      <div class="sec-head">
+        <input id="userSearch" class="search-input" type="text" placeholder="🔍 Search username..." autocomplete="off">
+        <button id="refreshUsersBtn" class="u-btn ban" style="padding:10px 16px;font-size:13.5px">🔄 Refresh</button>
+      </div>
+      <div id="usersBox" class="user-list"><div class="empty-state"><span class="loader"></span> Loading users...</div></div>
+    </div>
+
+    <div id="page-downloads" class="page hidden">
+      <div class="page-title">📥 DOWNLOADS MANAGER</div>
+      <div class="page-sub">Add, edit, delete download buttons</div>
+      <div class="sec-head">
+        <input id="dlSearch" class="search-input" type="text" placeholder="🔍 Search download..." autocomplete="off">
+        <button id="addDownloadBtn" class="u-btn primary" style="padding:11px 18px;font-size:14px">➕ Add New</button>
+      </div>
+      <div id="downloadsBox" class="dl-list"><div class="empty-state"><span class="loader"></span> Loading downloads...</div></div>
+    </div>
+
+    <div id="page-orders" class="page hidden">
+      <div class="page-title">💳 ORDERS MANAGER</div>
+      <div class="page-sub">Approve, reject, or review customer orders</div>
+      <div class="sec-head" style="margin-top:6px">
+        <input id="orderSearch" class="search-input" type="text" placeholder="🔍 Search username / TrxID..." autocomplete="off">
+        <button id="refreshOrdersBtn" class="u-btn ban" style="padding:10px 16px;font-size:13.5px">🔄 Refresh</button>
+      </div>
+      <div class="order-filters" id="orderFilters">
+        <button class="of-btn active" data-filter="all">All <span class="of-count" id="cntAll">0</span></button>
+        <button class="of-btn" data-filter="pending">Pending <span class="of-count" id="cntPending">0</span></button>
+        <button class="of-btn" data-filter="approved">Approved <span class="of-count" id="cntApproved">0</span></button>
+        <button class="of-btn" data-filter="rejected">Rejected <span class="of-count" id="cntRejected">0</span></button>
+      </div>
+      <div id="ordersBox" class="order-list"><div class="empty-state"><span class="loader"></span> Loading orders...</div></div>
+    </div>
+
+    <div id="page-ads" class="page hidden">
+      <div class="page-title">📢 ADS MANAGER</div>
+      <div class="page-sub">Manage 4 advertisement slots on your site</div>
+      <div id="adsBox" class="ad-slots-list"><div class="empty-state"><span class="loader"></span> Loading ads...</div></div>
+    </div>
+
+    <div id="page-media" class="page hidden">
+      <div class="page-title">🖼️ MEDIA</div>
+      <div class="page-sub">Change logos and profile images</div>
+      <div class="media-grid">
+        <div class="media-item">
+          <div class="media-preview" id="previewProfile">
+            <img id="imgProfile" src="" alt="" style="display:none">
+            <span id="phProfile" style="display:none">👤</span>
+          </div>
+          <div class="media-label">PROFILE PIC</div>
+          <div class="media-sub">Your profile picture</div>
+          <button class="u-btn edit" style="width:100%;padding:10px" onclick="editMedia('profilePic','Profile Picture')">✏️ Edit</button>
+        </div>
+        <div class="media-item">
+          <div class="media-preview square" id="previewLogo">
+            <img id="imgLogo" src="" alt="" style="display:none">
+            <span id="phLogo" style="display:none">🎮</span>
+          </div>
+          <div class="media-label">MAIN LOGO</div>
+          <div class="media-sub">Site logo</div>
+          <button class="u-btn edit" style="width:100%;padding:10px" onclick="editMedia('mainLogo','Main Logo')">✏️ Edit</button>
+        </div>
+        <div class="media-item">
+          <div class="media-preview square" id="previewBkash">
+            <img id="imgBkash" src="" alt="" style="display:none">
+            <span id="phBkash" style="display:none">💳</span>
+          </div>
+          <div class="media-label">BKASH LOGO</div>
+          <div class="media-sub">Payment logo</div>
+          <button class="u-btn edit" style="width:100%;padding:10px" onclick="editMedia('bkashLogo','bKash Logo')">✏️ Edit</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-payment" class="page hidden">
+      <div class="page-title">💰 PAYMENT SETTINGS</div>
+      <div class="page-sub">Configure bKash and WhatsApp numbers</div>
+      <div class="settings-card">
+        <h3><span class="ico">💳</span> BKASH</h3>
+        <div class="form-field">
+          <label class="form-label" for="setBkashNumber">bKash Number</label>
+          <input id="setBkashNumber" class="form-input" type="tel" placeholder="017XXXXXXXXX" inputmode="numeric" maxlength="14">
+          <div class="form-hint">User এই নাম্বারে Send Money করবে</div>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="setAmount">Amount (৳)</label>
+          <input id="setAmount" class="form-input" type="number" placeholder="99" min="1" max="99999">
+          <div class="form-hint">Premium sensitivity-র মূল্য</div>
+        </div>
+      </div>
+      <div class="settings-card">
+        <h3><span class="ico">📱</span> WHATSAPP</h3>
+        <div class="form-field">
+          <label class="form-label" for="setWhatsappNumber">WhatsApp Number</label>
+          <input id="setWhatsappNumber" class="form-input" type="tel" placeholder="88017XXXXXXXX" inputmode="numeric" maxlength="15">
+          <div class="form-hint">দেশের কোড দিয়ে শুরু (যেমন: 8801794136670)</div>
+        </div>
+      </div>
+      <button class="save-btn gold" id="savePaymentBtn">💾 Save Payment Settings</button>
+    </div>
+
+    <div id="page-settings" class="page hidden">
+      <div class="page-title">⚙️ SITE SETTINGS</div>
+      <div class="page-sub">Site name, welcome text, notice and more</div>
+      <div class="settings-card">
+        <h3><span class="ico">🏷️</span> SITE INFO</h3>
+        <div class="form-field">
+          <label class="form-label" for="setSiteName">Site Name</label>
+          <input id="setSiteName" class="form-input" type="text" placeholder="FF HUB PRO" maxlength="40">
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="setWelcomeText">Welcome Text</label>
+          <input id="setWelcomeText" class="form-input" type="text" placeholder="WELCOME TO MY OFFICIAL PROFILE!" maxlength="80">
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="setProfileName">Profile Name</label>
+          <input id="setProfileName" class="form-input" type="text" placeholder="SM-SHAKIB" maxlength="40">
+        </div>
+      </div>
+      <div class="settings-card">
+        <h3><span class="ico">📢</span> NOTICE</h3>
+        <div class="form-field">
+          <label class="form-label" for="setNotice">Notice Message (optional)</label>
+          <textarea id="setNotice" class="form-textarea" placeholder="যেমন: আজকের অফার ৳49!" maxlength="300"></textarea>
+          <div class="form-hint">খালি রাখলে notice দেখাবে না</div>
+        </div>
+      </div>
+      <div class="settings-card">
+        <h3><span class="ico">🔗</span> SOCIAL LINKS</h3>
+        <div class="form-field">
+          <label class="form-label" for="setTelegram">Telegram</label>
+          <input id="setTelegram" class="form-input" type="url" placeholder="https://t.me/yourchannel" maxlength="200">
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="setYoutube">YouTube</label>
+          <input id="setYoutube" class="form-input" type="url" placeholder="https://youtube.com/@yourchannel" maxlength="200">
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="setFacebook">Facebook</label>
+          <input id="setFacebook" class="form-input" type="url" placeholder="https://facebook.com/yourpage" maxlength="200">
+        </div>
+      </div>
+      <button class="save-btn" id="saveSiteSettingsBtn">💾 Save Site Settings</button>
+    </div>
+
+  </main>
+</div>
+
+<!-- DOWNLOAD MODAL -->
+<div class="modal-overlay" id="dlModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="dlModalTitle">ADD DOWNLOAD</div>
+      <button class="modal-close" id="dlModalClose">✕</button>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Button Name</label>
+      <input id="dlName" class="form-input" type="text" placeholder="DOWNLOAD FREE ROOT APK" maxlength="60">
+    </div>
+    <div class="form-field">
+      <label class="form-label">📝 Description (optional)</label>
+      <textarea id="dlDescription" class="form-textarea" placeholder="Short description about this file..." maxlength="300"></textarea>
+      <div class="form-hint">User download popup-এ এই description দেখাবে</div>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Download Link (URL)</label>
+      <input id="dlLink" class="form-input" type="url" placeholder="https://example.com/file.apk" maxlength="300">
+    </div>
+    <div class="form-field">
+      <label class="form-label">🔐 Password (optional)</label>
+      <input id="dlPassword" class="form-input" type="text" placeholder="খালি রাখলে = No Password" maxlength="40">
+      <div class="form-hint">খালি রাখলে user-এর স্ক্রিনে "Password: NO" দেখাবে</div>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Category</label>
+      <select id="dlCategory" class="form-select">
+        <option value="free">Free</option>
+        <option value="paid">Paid</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Order (Position)</label>
+      <input id="dlOrder" class="form-input" type="number" placeholder="1" min="1" max="999">
+    </div>
+    <div class="form-field">
+      <div class="toggle-row">
+        <div><div class="tr-lbl">Enabled</div><div class="tr-sub">Show this button on the site</div></div>
+        <label class="switch"><input type="checkbox" id="dlEnabled" checked><span class="slider"></span></label>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="dlCancelBtn">Cancel</button>
+      <button class="btn-save" id="dlSaveBtn">💾 Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ORDER MODAL -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">ORDER DETAILS</div>
+      <button class="modal-close" id="orderModalClose">✕</button>
+    </div>
+    <div class="detail-grid" id="orderDetailGrid"></div>
+    <div class="form-field">
+      <label class="form-label">Sensitivity Code / Message</label>
+      <textarea id="orderSensiCode" class="form-textarea" placeholder="FF HUB PRO — Sensitivity&#10;General: 172&#10;Red Dot: 168&#10;..."></textarea>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Admin Note (optional)</label>
+      <input id="orderAdminNote" class="form-input" type="text" placeholder="Internal note" maxlength="200">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="orderCloseBtn">Close</button>
+      <button class="btn-reject" id="orderRejectBtn">❌ Reject</button>
+      <button class="btn-approve" id="orderApproveBtn">✅ Approve</button>
+    </div>
+  </div>
+</div>
+
+<!-- AD MODAL -->
+<div class="modal-overlay" id="adModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="adModalTitle">EDIT AD</div>
+      <button class="modal-close" id="adModalClose">✕</button>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Ad Title</label>
+      <input id="adTitle" class="form-input" type="text" placeholder="যেমন: Join Our Telegram" maxlength="60">
+    </div>
+    <div class="form-field">
+      <label class="form-label">Image URL (optional)</label>
+      <input id="adImage" class="form-input" type="url" placeholder="https://..." maxlength="400">
+      <div class="form-hint">ছবি না দিলে শুধু title দেখাবে</div>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Click Link (URL)</label>
+      <input id="adLink" class="form-input" type="url" placeholder="https://..." maxlength="400">
+    </div>
+    <div class="form-field">
+      <div class="toggle-row">
+        <div><div class="tr-lbl">Enabled</div><div class="tr-sub">Show this ad on the site</div></div>
+        <label class="switch"><input type="checkbox" id="adEnabled" checked><span class="slider"></span></label>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="adCancelBtn">Cancel</button>
+      <button class="btn-save" id="adSaveBtn">💾 Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEDIA MODAL -->
+<div class="modal-overlay" id="mediaModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="mediaModalTitle">EDIT MEDIA</div>
+      <button class="modal-close" id="mediaModalClose">✕</button>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Image URL</label>
+      <input id="mediaUrl" class="form-input" type="url" placeholder="https://..." maxlength="500">
+      <div class="form-hint">Direct image link দিন (ending .jpg / .png / .webp)</div>
+    </div>
+    <div class="form-field" id="mediaPreviewWrap" style="display:none;text-align:center">
+      <div style="font-family:var(--font-b);font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:8px">PREVIEW</div>
+      <img id="mediaPreviewImg" style="max-height:120px;margin:0 auto;border-radius:12px;border:1px solid rgba(255,255,255,.15)" alt="">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="mediaCancelBtn">Cancel</button>
+      <button class="btn-save" id="mediaSaveBtn">💾 Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="toastBox"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+<script>
+const $ = (id) => document.getElementById(id);
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCEZX9rYHUIvoh21RzWBBiHFWrRtYQSBk4",
+  authDomain: "ff-hub-pro.firebaseapp.com",
+  databaseURL: "https://ff-hub-pro-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "ff-hub-pro",
+  storageBucket: "ff-hub-pro.firebasestorage.app",
+  messagingSenderId: "220062718667",
+  appId: "1:220062718667:web:6ea9325faac576fd98194e"
+};
+
+let db = null;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+  console.log('✅ Firebase connected');
+} catch(e) { console.error('❌ Firebase init failed:', e); }
+
+const ADMIN_KEY = 'SHAKIB19092ADMIN';
+const ADMIN_SESSION_KEY = 'ffhub_admin_session';
+
+function showToast(msg, type = '') {
+  const box = $('toastBox');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  box.appendChild(t);
+  setTimeout(() => {
+    t.style.transition = 'opacity .3s ease, transform .3s ease';
+    t.style.opacity = '0';
+    t.style.transform = 'translateY(12px)';
+    setTimeout(() => t.remove(), 320);
+  }, 2400);
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function formatDate(ts) {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  if (isNaN(d.getTime())) return '—';
+  return d.toLocaleString('en-GB', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', hour12:true });
+}
+
+function doAdminLogin() {
+  const input = $('adminPass');
+  const val = (input.value || '').trim();
+  if (!val) { showToast('❌ পাসওয়ার্ড দিন'); input.focus(); return; }
+  if (val !== ADMIN_KEY) { showToast('❌ ভুল পাসওয়ার্ড'); input.value = ''; input.focus(); return; }
+  try { localStorage.setItem(ADMIN_SESSION_KEY, '1'); } catch(e) {}
+  input.value = '';
+  showToast('✅ স্বাগতম Admin!', 'ok');
+  openAdmin();
+}
+function doAdminLogout() {
+  try { localStorage.removeItem(ADMIN_SESSION_KEY); } catch(e) {}
+  $('adminApp').classList.add('hidden');
+  $('loginScreen').classList.remove('hidden');
+  setTimeout(() => $('adminPass').focus(), 200);
+  showToast('👋 Logout হয়েছে', 'info');
+}
+function openAdmin() {
+  $('loginScreen').classList.add('hidden');
+  $('adminApp').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  setTimeout(loadDashboardStats, 300);
+  setTimeout(loadSettingsToForms, 300);
+  setTimeout(loadMediaPreviews, 300);
+}
+function isLoggedIn() {
+  try { return localStorage.getItem(ADMIN_SESSION_KEY) === '1'; } catch(e) { return false; }
+}
+
+function openSidebar() { $('sidebar').classList.add('open'); $('scrim').classList.add('open'); }
+function closeSidebar() { $('sidebar').classList.remove('open'); $('scrim').classList.remove('open'); }
+
+function switchPage(pageName) {
+  document.querySelectorAll('.sb-item[data-page]').forEach(el => {
+    el.classList.toggle('active', el.dataset.page === pageName);
+  });
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  const target = $('page-' + pageName);
+  if (target) target.classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  closeSidebar();
+  if (pageName === 'users') setTimeout(loadUsersList, 50);
+  if (pageName === 'dashboard') setTimeout(loadDashboardStats, 50);
+  if (pageName === 'downloads') setTimeout(loadDownloadsList, 50);
+  if (pageName === 'orders') setTimeout(loadOrdersList, 50);
+  if (pageName === 'ads') setTimeout(loadAdsList, 50);
+  if (pageName === 'media') setTimeout(loadMediaPreviews, 50);
+  if (pageName === 'payment' || pageName === 'settings') setTimeout(loadSettingsToForms, 50);
+}
+
+function loadDashboardStats() {
+  if (!db) return;
+  db.ref('users').on('value', snap => {
+    const data = snap.val() || {};
+    const arr = Object.keys(data).map(k => Object.assign({ _key: k }, data[k]));
+    $('statUsers').textContent = arr.length;
+    const recent = arr.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 5);
+    renderRecentUsers(recent);
+  });
+  db.ref('orders').on('value', snap => {
+    const data = snap.val() || {};
+    const arr = Object.values(data);
+    $('statOrders').textContent = arr.length;
+    $('statPending').textContent = arr.filter(o => (o.status || 'pending') === 'pending').length;
+  });
+  db.ref('downloads').on('value', snap => {
+    const data = snap.val() || {};
+    let total = 0;
+    Object.values(data).forEach(item => { if (item && item.clicks) total += Number(item.clicks) || 0; });
+    $('statClicks').textContent = total;
+  });
+}
+function renderRecentUsers(users) {
+  const box = $('recentUsersBox');
+  if (!users.length) { box.innerHTML = '<div class="empty-state">😕 এখনো কোনো ইউজার নেই</div>'; return; }
+  box.innerHTML = users.map(u => userRowHTML(u, true)).join('');
+  bindUserActions(box);
+}
+
+let ALL_USERS = [];
+let USERS_LISTENER_ATTACHED = false;
+function loadUsersList() {
+  if (!db) return;
+  const box = $('usersBox');
+  if (!USERS_LISTENER_ATTACHED) {
+    USERS_LISTENER_ATTACHED = true;
+    db.ref('users').on('value', snap => {
+      const data = snap.val() || {};
+      ALL_USERS = Object.keys(data).map(k => Object.assign({ _key: k }, data[k]));
+      ALL_USERS.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+      filterAndRenderUsers();
+    }, err => { box.innerHTML = '<div class="empty-state">❌ ' + err.message + '</div>'; });
+  } else filterAndRenderUsers();
+}
+function filterAndRenderUsers() {
+  const q = ($('userSearch') ? ($('userSearch').value || '').trim().toLowerCase() : '');
+  const filtered = q ? ALL_USERS.filter(u => (u.username || '').toLowerCase().includes(q)) : ALL_USERS;
+  renderUsersList(filtered);
+}
+function renderUsersList(users) {
+  const box = $('usersBox');
+  if (!users.length) { box.innerHTML = '<div class="empty-state">😕 কোনো ইউজার পাওয়া যায়নি</div>'; return; }
+  box.innerHTML = users.map(u => userRowHTML(u, false)).join('');
+  bindUserActions(box);
+}
+function userRowHTML(u, compact) {
+  const name = u.username || 'Unknown';
+  const initial = name.charAt(0).toUpperCase();
+  const banned = u.banned === true;
+  const joined = u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+  const uid = u._key || u.id || '';
+  let html = `<div class="user-row ${banned?'banned':''}" data-uid="${uid}">
+    <div class="u-avatar">${escapeHtml(initial)}</div>
+    <div class="u-info">
+      <div class="u-name">${escapeHtml(name)}<span class="u-badge ${banned?'banned':'active'}">${banned?'BANNED':'ACTIVE'}</span></div>
+      <div class="u-meta">📅 ${joined}</div>
+    </div>`;
+  if (!compact) {
+    html += `<div class="u-actions">
+      ${banned
+        ? `<button class="u-btn unban" data-act="unban" data-uid="${uid}">✅ Unban</button>`
+        : `<button class="u-btn ban" data-act="ban" data-uid="${uid}">🚫 Ban</button>`}
+      <button class="u-btn del" data-act="del" data-uid="${uid}" data-name="${escapeHtml(name)}">🗑️ Delete</button>
+    </div>`;
+  }
+  return html + `</div>`;
+}
+function bindUserActions(container) {
+  container.querySelectorAll('.u-btn[data-act]').forEach(btn => {
+    if (btn.dataset.bound === '1') return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', () => {
+      const act = btn.dataset.act; const uid = btn.dataset.uid;
+      if (!uid) return;
+      if (act === 'ban') db.ref('users/' + uid).update({ banned: true }).then(() => showToast('🚫 Ban', 'info')).catch(e => showToast('❌ ' + e.message));
+      else if (act === 'unban') db.ref('users/' + uid).update({ banned: false }).then(() => showToast('✅ Unban', 'ok')).catch(e => showToast('❌ ' + e.message));
+      else if (act === 'del') {
+        const nm = btn.dataset.name || 'this user';
+        if (!confirm('Delete user "' + nm + '"?')) return;
+        db.ref('users/' + uid).remove().then(() => showToast('🗑️ Delete', 'ok')).catch(e => showToast('❌ ' + e.message));
+      }
+    });
+  });
+}
+
+let ALL_DOWNLOADS = [];
+let DL_LISTENER_ATTACHED = false;
+let EDITING_DL_KEY = null;
+
+function loadDownloadsList() {
+  if (!db) return;
+  const box = $('downloadsBox');
+  if (!DL_LISTENER_ATTACHED) {
+    DL_LISTENER_ATTACHED = true;
+    db.ref('downloads').on('value', snap => {
+      const data = snap.val() || {};
+      ALL_DOWNLOADS = Object.keys(data).map(k => Object.assign({ _key: k }, data[k]));
+      ALL_DOWNLOADS.sort((a,b) => {
+        const ao = Number(a.order) || 999, bo = Number(b.order) || 999;
+        if (ao !== bo) return ao - bo;
+        return (a.name || '').localeCompare(b.name || '');
+      });
+      filterAndRenderDownloads();
+    }, err => { box.innerHTML = '<div class="empty-state">❌ ' + err.message + '</div>'; });
+  } else filterAndRenderDownloads();
+}
+function filterAndRenderDownloads() {
+  const q = ($('dlSearch') ? ($('dlSearch').value || '').trim().toLowerCase() : '');
+  const filtered = q ? ALL_DOWNLOADS.filter(d => (d.name || '').toLowerCase().includes(q)) : ALL_DOWNLOADS;
+  renderDownloadsList(filtered);
+}
+function renderDownloadsList(items) {
+  const box = $('downloadsBox');
+  if (!items.length) { box.innerHTML = '<div class="empty-state">😕 এখনো কোনো download নেই</div>'; return; }
+  box.innerHTML = items.map(d => downloadCardHTML(d)).join('');
+  bindDownloadActions(box);
+}
+function downloadCardHTML(d) {
+  const key = d._key || '';
+  const name = d.name || 'Untitled';
+  const link = d.link || '';
+  const pwd = (d.password || '').trim();
+  const description = (d.description || '').trim();
+  const cat = (d.category || 'free').toLowerCase();
+  const enabled = d.enabled !== false;
+  const clicks = Number(d.clicks) || 0;
+  const order = Number(d.order) || 999;
+  const pwdChip = pwd ? `<span class="dl-chip pwd">🔐 ${escapeHtml(pwd)}</span>` : `<span class="dl-chip nopwd">🔓 NO</span>`;
+  const descChip = description ? `<span class="dl-chip has-desc">📝 Has Desc</span>` : '';
+  const descHtml = description ? `<div class="dl-desc">📝 ${escapeHtml(description)}</div>` : '';
+  return `<div class="dl-card ${enabled?'':'disabled'}" data-key="${key}">
+    <div class="dl-top">
+      <div class="dl-ico">⬇</div>
+      <div class="dl-info">
+        <div class="dl-name">${escapeHtml(name)}</div>
+        ${descHtml}
+        <div class="dl-link">${escapeHtml(link || '— no link —')}</div>
+        <div class="dl-meta-row">
+          <span class="dl-chip cat-${cat}">${cat.toUpperCase()}</span>
+          <span class="dl-chip ${enabled?'status-on':'status-off'}">${enabled?'● ON':'○ OFF'}</span>
+          ${pwdChip}
+          ${descChip}
+          <span class="dl-chip clicks">📥 ${clicks}</span>
+          <span class="dl-chip status-on">#${order}</span>
+        </div>
+      </div>
+    </div>
+    <div class="dl-actions">
+      <button class="u-btn edit" data-act="edit" data-key="${key}">✏️ Edit</button>
+      <button class="u-btn ${enabled?'ban':'unban'}" data-act="toggle" data-key="${key}">${enabled?'⏸️ Disable':'▶️ Enable'}</button>
+      <button class="u-btn del" data-act="del" data-key="${key}" data-name="${escapeHtml(name)}">🗑️ Delete</button>
+    </div>
+  </div>`;
+}
+function bindDownloadActions(container) {
+  container.querySelectorAll('.u-btn[data-act]').forEach(btn => {
+    if (btn.dataset.bound === '1') return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', () => {
+      const act = btn.dataset.act, key = btn.dataset.key;
+      if (!key) return;
+      if (act === 'edit') {
+        const item = ALL_DOWNLOADS.find(x => x._key === key);
+        if (item) openDownloadModal(item);
+      } else if (act === 'toggle') {
+        const item = ALL_DOWNLOADS.find(x => x._key === key);
+        if (!item) return;
+        const newVal = !(item.enabled !== false);
+        db.ref('downloads/' + key).update({ enabled: newVal })
+          .then(() => showToast(newVal ? '▶️ Enable' : '⏸️ Disable', newVal ? 'ok' : 'info'))
+          .catch(e => showToast('❌ ' + e.message));
+      } else if (act === 'del') {
+        const nm = btn.dataset.name || 'this item';
+        if (!confirm('Delete "' + nm + '"?')) return;
+        db.ref('downloads/' + key).remove().then(() => showToast('🗑️ Delete', 'ok')).catch(e => showToast('❌ ' + e.message));
+      }
+    });
+  });
+}
+function openDownloadModal(item) {
+  EDITING_DL_KEY = item ? item._key : null;
+  $('dlModalTitle').textContent = item ? 'EDIT DOWNLOAD' : 'ADD DOWNLOAD';
+  $('dlName').value = item ? (item.name || '') : '';
+  $('dlDescription').value = item ? (item.description || '') : '';
+  $('dlLink').value = item ? (item.link || '') : '';
+  $('dlPassword').value = item ? (item.password || '') : '';
+  $('dlCategory').value = item ? (item.category || 'free') : 'free';
+  $('dlOrder').value = item ? (item.order || '') : (ALL_DOWNLOADS.length + 1);
+  $('dlEnabled').checked = item ? (item.enabled !== false) : true;
+  $('dlModal').classList.add('open');
+  setTimeout(() => $('dlName').focus(), 250);
+}
+function closeDownloadModal() { $('dlModal').classList.remove('open'); EDITING_DL_KEY = null; }
+function saveDownload() {
+  const name = ($('dlName').value || '').trim();
+  const description = ($('dlDescription').value || '').trim();
+  const link = ($('dlLink').value || '').trim();
+  const password = ($('dlPassword').value || '').trim();
+  const category = $('dlCategory').value || 'free';
+  const order = parseInt($('dlOrder').value) || 999;
+  const enabled = $('dlEnabled').checked;
+  if (name.length < 3) { showToast('❌ নাম কমপক্ষে ৩ অক্ষর'); $('dlName').focus(); return; }
+  if (!link || !/^https?:\/\/.+/i.test(link)) { showToast('❌ সঠিক URL দিন'); $('dlLink').focus(); return; }
+  const data = { name, description, link, password, category, order, enabled };
+  if (EDITING_DL_KEY) {
+    db.ref('downloads/' + EDITING_DL_KEY).update(data)
+      .then(() => { showToast('✅ Update', 'ok'); closeDownloadModal(); })
+      .catch(e => showToast('❌ ' + e.message));
+  } else {
+    data.clicks = 0;
+    db.ref('downloads').push(data)
+      .then(() => { showToast('✅ নতুন Download', 'ok'); closeDownloadModal(); })
+      .catch(e => showToast('❌ ' + e.message));
+  }
+}
+
+let ALL_ORDERS = [];
+let ORDERS_LISTENER_ATTACHED = false;
+let ORDER_FILTER = 'all';
+let EDITING_ORDER_KEY = null;
+
+function loadOrdersList() {
+  if (!db) return;
+  const box = $('ordersBox');
+  if (!ORDERS_LISTENER_ATTACHED) {
+    ORDERS_LISTENER_ATTACHED = true;
+    db.ref('orders').on('value', snap => {
+      const data = snap.val() || {};
+      ALL_ORDERS = Object.keys(data).map(k => Object.assign({ _key: k }, data[k]));
+      ALL_ORDERS.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+      updateOrderCounts();
+      filterAndRenderOrders();
+    }, err => { box.innerHTML = '<div class="empty-state">❌ ' + err.message + '</div>'; });
+  } else { updateOrderCounts(); filterAndRenderOrders(); }
+}
+function updateOrderCounts() {
+  $('cntAll').textContent = ALL_ORDERS.length;
+  $('cntPending').textContent = ALL_ORDERS.filter(o => (o.status || 'pending') === 'pending').length;
+  $('cntApproved').textContent = ALL_ORDERS.filter(o => o.status === 'approved').length;
+  $('cntRejected').textContent = ALL_ORDERS.filter(o => o.status === 'rejected').length;
+}
+function filterAndRenderOrders() {
+  const q = ($('orderSearch') ? ($('orderSearch').value || '').trim().toLowerCase() : '');
+  let filtered = ALL_ORDERS;
+  if (ORDER_FILTER !== 'all') filtered = filtered.filter(o => (o.status || 'pending') === ORDER_FILTER);
+  if (q) filtered = filtered.filter(o => {
+    const u = (o.username || '').toLowerCase(), t = (o.trxId || '').toLowerCase();
+    const s = (o.sender || '').toLowerCase(), m = (o.model || '').toLowerCase();
+    return u.includes(q) || t.includes(q) || s.includes(q) || m.includes(q);
+  });
+  renderOrdersList(filtered);
+}
+function renderOrdersList(orders) {
+  const box = $('ordersBox');
+  if (!orders.length) { box.innerHTML = '<div class="empty-state">😕 কোনো order পাওয়া যায়নি</div>'; return; }
+  box.innerHTML = orders.map(o => orderCardHTML(o)).join('');
+  bindOrderActions(box);
+}
+function orderCardHTML(o) {
+  const key = o._key || '';
+  const status = o.status || 'pending';
+  return `<div class="order-card ${status}" data-key="${key}">
+    <div class="oc-top">
+      <div>
+        <div class="oc-user">👤 ${escapeHtml(o.username || 'Guest')} <span class="oc-status ${status}">${status.toUpperCase()}</span></div>
+        <div class="oc-date">🕒 ${formatDate(o.createdAt)}</div>
+      </div>
+    </div>
+    <div class="oc-grid">
+      <div class="oc-cell"><div class="oc-lbl">Model</div><div class="oc-val">${escapeHtml(o.model || '—')}</div></div>
+      <div class="oc-cell"><div class="oc-lbl">RAM</div><div class="oc-val">${escapeHtml(o.ram || '—')}</div></div>
+      <div class="oc-cell"><div class="oc-lbl">Amount</div><div class="oc-val">৳${escapeHtml(o.amount || 0)}</div></div>
+      <div class="oc-cell"><div class="oc-lbl">TrxID</div><div class="oc-val">${escapeHtml(o.trxId || '—')}</div></div>
+    </div>
+    <div class="oc-actions">
+      <button class="u-btn edit" data-act="view" data-key="${key}">👁️ View / Manage</button>
+      <button class="u-btn del" data-act="delete" data-key="${key}" data-name="${escapeHtml(o.username)}">🗑️ Delete</button>
+    </div>
+  </div>`;
+}
+function bindOrderActions(container) {
+  container.querySelectorAll('.u-btn[data-act]').forEach(btn => {
+    if (btn.dataset.bound === '1') return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', () => {
+      const act = btn.dataset.act, key = btn.dataset.key;
+      if (!key) return;
+      if (act === 'view') {
+        const item = ALL_ORDERS.find(x => x._key === key);
+        if (item) openOrderModal(item);
+      } else if (act === 'delete') {
+        const nm = btn.dataset.name || 'this order';
+        if (!confirm('Delete order of "' + nm + '"?')) return;
+        db.ref('orders/' + key).remove().then(() => showToast('🗑️ Delete', 'ok')).catch(e => showToast('❌ ' + e.message));
+      }
+    });
+  });
+}
+function openOrderModal(o) {
+  EDITING_ORDER_KEY = o._key;
+  const status = o.status || 'pending';
+  $('orderDetailGrid').innerHTML = `
+    <div class="detail-cell"><div class="detail-lbl">Username</div><div class="detail-val">${escapeHtml(o.username || 'Guest')}</div></div>
+    <div class="detail-cell"><div class="detail-lbl">Status</div><div class="detail-val">${status.toUpperCase()}</div></div>
+    <div class="detail-cell"><div class="detail-lbl">Model</div><div class="detail-val">${escapeHtml(o.model || '—')}</div></div>
+    <div class="detail-cell"><div class="detail-lbl">RAM</div><div class="detail-val">${escapeHtml(o.ram || '—')}</div></div>
+    <div class="detail-cell"><div class="detail-lbl">IGN</div><div class="detail-val">${escapeHtml(o.ign || '—')}</div></div>
+    <div class="detail-cell"><div class="detail-lbl">Amount</div><div class="detail-val">৳${escapeHtml(o.amount || 0)}</div></div>
+    <div class="detail-cell"><div class="detail-lbl">Sender</div><div class="detail-val">${escapeHtml(o.sender || '—')}</div></div>
+    <div class="detail-cell"><div class="detail-lbl">TrxID</div><div class="detail-val">${escapeHtml(o.trxId || '—')}</div></div>
+    <div class="detail-cell wide"><div class="detail-lbl">Order Time</div><div class="detail-val">${formatDate(o.createdAt)}</div></div>`;
+  $('orderSensiCode').value = o.sensitivityCode || '';
+  $('orderAdminNote').value = o.adminNote || '';
+  $('orderModal').classList.add('open');
+}
+function closeOrderModal() { $('orderModal').classList.remove('open'); EDITING_ORDER_KEY = null; }
+function approveOrder() {
+  if (!EDITING_ORDER_KEY) return;
+  const code = ($('orderSensiCode').value || '').trim();
+  const note = ($('orderAdminNote').value || '').trim();
+  if (!code) { showToast('❌ Sensitivity code লিখুন'); $('orderSensiCode').focus(); return; }
+  db.ref('orders/' + EDITING_ORDER_KEY).update({ status: 'approved', sensitivityCode: code, adminNote: note, approvedAt: Date.now() })
+    .then(() => { showToast('✅ Approve হয়েছে', 'ok'); closeOrderModal(); })
+    .catch(e => showToast('❌ ' + e.message));
+}
+function rejectOrder() {
+  if (!EDITING_ORDER_KEY) return;
+  const note = ($('orderAdminNote').value || '').trim();
+  if (!confirm('এই order reject করবেন?')) return;
+  db.ref('orders/' + EDITING_ORDER_KEY).update({ status: 'rejected', adminNote: note, rejectedAt: Date.now() })
+    .then(() => { showToast('❌ Reject হয়েছে', 'info'); closeOrderModal(); })
+    .catch(e => showToast('❌ ' + e.message));
+}
+
+const AD_SLOTS = [
+  { id: 'login',   label: 'Login Screen' },
+  { id: 'profile', label: 'Profile Section' },
+  { id: 'free',    label: 'Free Category' },
+  { id: 'paid',    label: 'Paid Category' }
+];
+let ALL_ADS = {};
+let ADS_LISTENER_ATTACHED = false;
+let EDITING_AD_KEY = null;
+
+function loadAdsList() {
+  if (!db) return;
+  const box = $('adsBox');
+  if (!ADS_LISTENER_ATTACHED) {
+    ADS_LISTENER_ATTACHED = true;
+    db.ref('ads').on('value', snap => { ALL_ADS = snap.val() || {}; renderAdsList(); },
+      err => { box.innerHTML = '<div class="empty-state">❌ ' + err.message + '</div>'; });
+  } else renderAdsList();
+}
+function renderAdsList() {
+  const box = $('adsBox');
+  box.innerHTML = AD_SLOTS.map(slot => adSlotCardHTML(slot)).join('');
+  bindAdActions(box);
+}
+function adSlotCardHTML(slot) {
+  const ad = ALL_ADS[slot.id] || {};
+  const title = ad.title || '';
+  const image = ad.imageUrl || '';
+  const link = ad.linkUrl || '';
+  const enabled = ad.enabled === true;
+  const clicks = Number(ad.clicks) || 0;
+  let preview = '';
+  if (image) preview += `<img src="${escapeHtml(image)}" alt="ad">`;
+  if (title) preview += `<div class="ad-preview-title">${escapeHtml(title)}</div>`;
+  if (!title && !image) preview = `<div class="ad-preview-empty">📭 খালি — Edit চেপে ad যোগ করুন</div>`;
+  return `<div class="ad-slot-card ${enabled?'enabled':''}" data-slot="${slot.id}">
+    <div class="ad-slot-head">
+      <div class="ad-slot-name">📢 ${escapeHtml(slot.label)}</div>
+      <span class="ad-slot-id">${slot.id}</span>
+    </div>
+    <div class="ad-preview">${preview}</div>
+    <div class="ad-info-row">
+      <span class="ad-info">Status: <b>${enabled?'ON':'OFF'}</b></span>
+      <span class="ad-info">Clicks: <b>${clicks}</b></span>
+      <span class="ad-info">Link: <b>${link ? 'SET' : 'NONE'}</b></span>
+    </div>
+    <div class="ad-slot-actions">
+      <button class="u-btn edit" data-act="edit" data-slot="${slot.id}">✏️ Edit</button>
+      <button class="u-btn ${enabled?'ban':'unban'}" data-act="toggle" data-slot="${slot.id}">${enabled?'⏸️ Disable':'▶️ Enable'}</button>
+      <button class="u-btn del" data-act="clear" data-slot="${slot.id}">🧹 Clear</button>
+    </div>
+  </div>`;
+}
+function bindAdActions(container) {
+  container.querySelectorAll('.u-btn[data-act]').forEach(btn => {
+    if (btn.dataset.bound === '1') return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', () => {
+      const act = btn.dataset.act, slotId = btn.dataset.slot;
+      if (!slotId) return;
+      if (act === 'edit') openAdModal(slotId);
+      else if (act === 'toggle') {
+        const cur = ALL_ADS[slotId] || {};
+        const newVal = !(cur.enabled === true);
+        db.ref('ads/' + slotId).update({
+          title: cur.title || '', imageUrl: cur.imageUrl || '',
+          linkUrl: cur.linkUrl || '', enabled: newVal,
+          clicks: Number(cur.clicks) || 0
+        }).then(() => showToast(newVal ? '▶️ Ad Enabled' : '⏸️ Ad Disabled', newVal ? 'ok' : 'info'))
+          .catch(e => showToast('❌ ' + e.message));
+      } else if (act === 'clear') {
+        if (!confirm('এই ad-এর সব data মুছে ফেলবেন?')) return;
+        db.ref('ads/' + slotId).update({ title: '', imageUrl: '', linkUrl: '', enabled: false, clicks: 0 })
+          .then(() => showToast('🧹 Clear হয়েছে', 'info'))
+          .catch(e => showToast('❌ ' + e.message));
+      }
+    });
+  });
+}
+function openAdModal(slotId) {
+  EDITING_AD_KEY = slotId;
+  const ad = ALL_ADS[slotId] || {};
+  const slotInfo = AD_SLOTS.find(s => s.id === slotId);
+  $('adModalTitle').textContent = 'EDIT AD — ' + (slotInfo ? slotInfo.label : slotId);
+  $('adTitle').value = ad.title || '';
+  $('adImage').value = ad.imageUrl || '';
+  $('adLink').value = ad.linkUrl || '';
+  $('adEnabled').checked = ad.enabled === true;
+  $('adModal').classList.add('open');
+  setTimeout(() => $('adTitle').focus(), 250);
+}
+function closeAdModal() { $('adModal').classList.remove('open'); EDITING_AD_KEY = null; }
+function saveAd() {
+  if (!EDITING_AD_KEY) return;
+  const title = ($('adTitle').value || '').trim();
+  const imageUrl = ($('adImage').value || '').trim();
+  const linkUrl = ($('adLink').value || '').trim();
+  const enabled = $('adEnabled').checked;
+  if (enabled && !title && !imageUrl) { showToast('❌ title বা image দিতে হবে'); return; }
+  if (linkUrl && !/^https?:\/\/.+/i.test(linkUrl)) { showToast('❌ Link সঠিক নয়'); $('adLink').focus(); return; }
+  if (imageUrl && !/^https?:\/\/.+/i.test(imageUrl)) { showToast('❌ Image URL সঠিক নয়'); $('adImage').focus(); return; }
+  const cur = ALL_ADS[EDITING_AD_KEY] || {};
+  db.ref('ads/' + EDITING_AD_KEY).update({
+    title, imageUrl, linkUrl, enabled,
+    clicks: Number(cur.clicks) || 0
+  }).then(() => { showToast('✅ Ad সেভ হয়েছে', 'ok'); closeAdModal(); })
+    .catch(e => showToast('❌ ' + e.message));
+}
+
+const DEFAULT_MEDIA = {
+  profilePic: 'https://i.postimg.cc/bNPcWkfm/9b456155cd35f9bdfcbca58b397edb75.jpg',
+  mainLogo: 'https://i.postimg.cc/fRsQ9XRP/f3fdd85fbe04992687d23e9334d7c71f-(1).jpg',
+  bkashLogo: 'https://i.postimg.cc/2yy25Tf9/images-(1).png'
+};
+let CURRENT_MEDIA = Object.assign({}, DEFAULT_MEDIA);
+let EDITING_MEDIA_KEY = null;
+
+function loadMediaPreviews() {
+  if (!db) return;
+  db.ref('settings').on('value', snap => {
+    const s = snap.val() || {};
+    CURRENT_MEDIA = {
+      profilePic: s.profilePic || DEFAULT_MEDIA.profilePic,
+      mainLogo: s.mainLogo || DEFAULT_MEDIA.mainLogo,
+      bkashLogo: s.bkashLogo || DEFAULT_MEDIA.bkashLogo
+    };
+    applyMediaPreviews();
+  });
+}
+function applyMediaPreviews() {
+  const map = [
+    { key: 'profilePic', imgId: 'imgProfile', phId: 'phProfile' },
+    { key: 'mainLogo',   imgId: 'imgLogo',    phId: 'phLogo' },
+    { key: 'bkashLogo',  imgId: 'imgBkash',   phId: 'phBkash' }
+  ];
+  map.forEach(m => {
+    const img = $(m.imgId), ph = $(m.phId);
+    if (!img) return;
+    const url = CURRENT_MEDIA[m.key] || '';
+    if (url) {
+      img.src = url;
+      img.style.display = 'block';
+      if (ph) ph.style.display = 'none';
+      img.onerror = () => { img.style.display='none'; if (ph) ph.style.display='block'; };
+    } else {
+      img.style.display = 'none';
+      if (ph) ph.style.display = 'block';
+    }
+  });
+}
+function editMedia(key, label) {
+  EDITING_MEDIA_KEY = key;
+  $('mediaModalTitle').textContent = 'EDIT — ' + label;
+  $('mediaUrl').value = CURRENT_MEDIA[key] || '';
+  updateMediaPreview();
+  $('mediaModal').classList.add('open');
+  setTimeout(() => $('mediaUrl').focus(), 250);
+}
+function updateMediaPreview() {
+  const url = ($('mediaUrl').value || '').trim();
+  const wrap = $('mediaPreviewWrap');
+  const img = $('mediaPreviewImg');
+  if (url && /^https?:\/\/.+/i.test(url)) {
+    img.src = url;
+    wrap.style.display = 'block';
+    img.onerror = () => { wrap.style.display = 'none'; };
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+function closeMediaModal() { $('mediaModal').classList.remove('open'); EDITING_MEDIA_KEY = null; }
+function saveMedia() {
+  if (!EDITING_MEDIA_KEY) return;
+  const url = ($('mediaUrl').value || '').trim();
+  if (!url) { showToast('❌ URL দিন'); $('mediaUrl').focus(); return; }
+  if (!/^https?:\/\/.+/i.test(url)) { showToast('❌ সঠিক URL দিন'); $('mediaUrl').focus(); return; }
+  db.ref('settings/' + EDITING_MEDIA_KEY).set(url)
+    .then(() => { showToast('✅ Media সেভ হয়েছে', 'ok'); closeMediaModal(); })
+    .catch(e => showToast('❌ ' + e.message));
+}
+
+function loadSettingsToForms() {
+  if (!db) return;
+  db.ref('settings').once('value').then(snap => {
+    const s = snap.val() || {};
+    if ($('setBkashNumber')) $('setBkashNumber').value = s.bkashNumber || '01794136670';
+    if ($('setWhatsappNumber')) $('setWhatsappNumber').value = s.whatsappNumber || '8801794136670';
+    if ($('setAmount')) $('setAmount').value = s.amount || 99;
+    if ($('setSiteName')) $('setSiteName').value = s.siteName || 'FF HUB PRO';
+    if ($('setWelcomeText')) $('setWelcomeText').value = s.welcomeText || 'WELCOME TO MY OFFICIAL PROFILE!';
+    if ($('setProfileName')) $('setProfileName').value = s.profileName || 'SM-SHAKIB';
+    if ($('setNotice')) $('setNotice').value = s.notice || '';
+    const sl = s.socialLinks || {};
+    if ($('setTelegram')) $('setTelegram').value = sl.telegram || '';
+    if ($('setYoutube')) $('setYoutube').value = sl.youtube || '';
+    if ($('setFacebook')) $('setFacebook').value = sl.facebook || '';
+  }).catch(e => console.error(e));
+}
+function savePaymentSettings() {
+  const bkashNumber = ($('setBkashNumber').value || '').trim();
+  const whatsappNumber = ($('setWhatsappNumber').value || '').trim();
+  const amount = parseInt($('setAmount').value) || 0;
+  if (!/^01[3-9]\d{8}$/.test(bkashNumber)) { showToast('❌ সঠিক bKash নাম্বার (১১ ডিজিট)'); $('setBkashNumber').focus(); return; }
+  if (!/^\d{10,15}$/.test(whatsappNumber)) { showToast('❌ সঠিক WhatsApp নাম্বার'); $('setWhatsappNumber').focus(); return; }
+  if (amount < 1) { showToast('❌ সঠিক Amount দিন'); $('setAmount').focus(); return; }
+  db.ref('settings').update({ bkashNumber, whatsappNumber, amount })
+    .then(() => showToast('✅ Payment সেভ হয়েছে', 'ok'))
+    .catch(e => showToast('❌ ' + e.message));
+}
+function saveSiteSettings() {
+  const siteName = ($('setSiteName').value || '').trim();
+  const welcomeText = ($('setWelcomeText').value || '').trim();
+  const profileName = ($('setProfileName').value || '').trim();
+  const notice = ($('setNotice').value || '').trim();
+  const telegram = ($('setTelegram').value || '').trim();
+  const youtube = ($('setYoutube').value || '').trim();
+  const facebook = ($('setFacebook').value || '').trim();
+  if (!siteName) { showToast('❌ Site Name দিন'); $('setSiteName').focus(); return; }
+  const validUrl = u => !u || /^https?:\/\/.+/i.test(u);
+  if (!validUrl(telegram)) { showToast('❌ Telegram URL সঠিক নয়'); $('setTelegram').focus(); return; }
+  if (!validUrl(youtube)) { showToast('❌ YouTube URL সঠিক নয়'); $('setYoutube').focus(); return; }
+  if (!validUrl(facebook)) { showToast('❌ Facebook URL সঠিক নয়'); $('setFacebook').focus(); return; }
+  db.ref('settings').update({
+    siteName, welcomeText, profileName, notice,
+    socialLinks: { telegram, youtube, facebook }
+  }).then(() => showToast('✅ Site Settings সেভ হয়েছে', 'ok'))
+    .catch(e => showToast('❌ ' + e.message));
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  if (isLoggedIn()) openAdmin();
+  else setTimeout(() => $('adminPass').focus(), 300);
+
+  $('adminLoginBtn').addEventListener('click', doAdminLogin);
+  $('adminPass').addEventListener('keydown', e => { if (e.key === 'Enter') doAdminLogin(); });
+  $('menuBtn').addEventListener('click', openSidebar);
+  $('sbClose').addEventListener('click', closeSidebar);
+  $('scrim').addEventListener('click', closeSidebar);
+  document.querySelectorAll('.sb-item[data-page]').forEach(el => {
+    el.addEventListener('click', () => switchPage(el.dataset.page));
+  });
+  $('tbLogoutBtn').addEventListener('click', doAdminLogout);
+  $('sbLogout').addEventListener('click', doAdminLogout);
+
+  const us = $('userSearch'); if (us) us.addEventListener('input', filterAndRenderUsers);
+  const refBtn = $('refreshUsersBtn'); if (refBtn) refBtn.addEventListener('click', () => { USERS_LISTENER_ATTACHED = false; loadUsersList(); });
+
+  const ds = $('dlSearch'); if (ds) ds.addEventListener('input', filterAndRenderDownloads);
+  $('addDownloadBtn').addEventListener('click', () => openDownloadModal(null));
+  $('dlModalClose').addEventListener('click', closeDownloadModal);
+  $('dlCancelBtn').addEventListener('click', closeDownloadModal);
+  $('dlSaveBtn').addEventListener('click', saveDownload);
+  $('dlModal').addEventListener('click', e => { if (e.target.id === 'dlModal') closeDownloadModal(); });
+
+  const os = $('orderSearch'); if (os) os.addEventListener('input', filterAndRenderOrders);
+  const refOBtn = $('refreshOrdersBtn'); if (refOBtn) refOBtn.addEventListener('click', () => { ORDERS_LISTENER_ATTACHED = false; loadOrdersList(); });
+  document.querySelectorAll('#orderFilters .of-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#orderFilters .of-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      ORDER_FILTER = btn.dataset.filter;
+      filterAndRenderOrders();
+    });
+  });
+  $('orderModalClose').addEventListener('click', closeOrderModal);
+  $('orderCloseBtn').addEventListener('click', closeOrderModal);
+  $('orderApproveBtn').addEventListener('click', approveOrder);
+  $('orderRejectBtn').addEventListener('click', rejectOrder);
+  $('orderModal').addEventListener('click', e => { if (e.target.id === 'orderModal') closeOrderModal(); });
+
+  $('adModalClose').addEventListener('click', closeAdModal);
+  $('adCancelBtn').addEventListener('click', closeAdModal);
+  $('adSaveBtn').addEventListener('click', saveAd);
+  $('adModal').addEventListener('click', e => { if (e.target.id === 'adModal') closeAdModal(); });
+
+  $('mediaModalClose').addEventListener('click', closeMediaModal);
+  $('mediaCancelBtn').addEventListener('click', closeMediaModal);
+  $('mediaSaveBtn').addEventListener('click', saveMedia);
+  $('mediaUrl').addEventListener('input', updateMediaPreview);
+  $('mediaModal').addEventListener('click', e => { if (e.target.id === 'mediaModal') closeMediaModal(); });
+
+  $('savePaymentBtn').addEventListener('click', savePaymentSettings);
+  $('saveSiteSettingsBtn').addEventListener('click', saveSiteSettings);
+
+  document.addEventListener('contextmenu', function(e){
+    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') e.preventDefault();
+  });
+});
+</script>
+
+</body>
+</html>
