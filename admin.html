@@ -132,6 +132,18 @@ body::after{width:320px;height:320px;background:rgba(255,215,0,.14);bottom:-140p
 .dl-actions{display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.06);padding-top:10px}
 .dl-actions .u-btn{flex:1;min-width:80px;text-align:center}
 
+/* ═══ TAG CHIPS ═══ */
+.tag-chip{display:inline-block;font-family:var(--font-b);font-weight:800;font-size:9.5px;padding:3px 9px;border-radius:6px;letter-spacing:.6px;text-transform:uppercase;margin-top:6px;border:1px solid transparent}
+.tag-chip.new{background:rgba(0,212,255,.18);color:#00D4FF;border-color:rgba(0,212,255,.5)}
+.tag-chip.update{background:rgba(59,139,255,.18);color:#3B8BFF;border-color:rgba(59,139,255,.5)}
+.tag-chip.newver{background:rgba(0,204,85,.18);color:#33DD77;border-color:rgba(0,204,85,.5)}
+.tag-chip.nonroot{background:rgba(179,102,255,.18);color:#B366FF;border-color:rgba(179,102,255,.5)}
+.tag-chip.root{background:rgba(255,136,0,.18);color:#FF8800;border-color:rgba(255,136,0,.5)}
+.tag-chip.hot{background:rgba(255,26,0,.18);color:#FF6666;border-color:rgba(255,26,0,.5)}
+.tag-chip.premium{background:rgba(255,215,0,.18);color:#FFD700;border-color:rgba(255,215,0,.5)}
+.tag-chip.free{background:rgba(0,204,85,.18);color:#33DD77;border-color:rgba(0,204,85,.5)}
+.tag-chip.best{background:rgba(255,184,0,.18);color:#FFB800;border-color:rgba(255,184,0,.5)}
+
 .order-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .of-btn{padding:9px 16px;border-radius:10px;font-family:var(--font-b);font-weight:700;font-size:13px;cursor:pointer;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:var(--muted)}
 .of-btn.active{background:linear-gradient(135deg,rgba(204,0,0,.28),rgba(255,26,0,.14));border-color:rgba(255,26,0,.5);color:#fff}
@@ -455,7 +467,6 @@ body::after{width:320px;height:320px;background:rgba(255,215,0,.14);bottom:-140p
   </main>
 </div>
 
-<!-- DOWNLOAD MODAL -->
 <div class="modal-overlay" id="dlModal">
   <div class="modal">
     <div class="modal-head">
@@ -481,6 +492,22 @@ body::after{width:320px;height:320px;background:rgba(255,215,0,.14);bottom:-140p
       <div class="form-hint">খালি রাখলে user-এর স্ক্রিনে "Password: NO" দেখাবে</div>
     </div>
     <div class="form-field">
+      <label class="form-label" for="dlTag">🏷️ Tag (Optional)</label>
+      <select id="dlTag" class="form-select">
+        <option value="none">— No Tag —</option>
+        <option value="new">🆕 NEW</option>
+        <option value="update">🔄 UPDATE</option>
+        <option value="newver">🆕 NEW VERSION</option>
+        <option value="nonroot">🔓 NON ROOT</option>
+        <option value="root">🔐 ROOT</option>
+        <option value="hot">🔥 HOT</option>
+        <option value="premium">💎 PREMIUM</option>
+        <option value="free">🎁 FREE</option>
+        <option value="best">⚡ BEST</option>
+      </select>
+      <div class="form-hint">User site-এ download button-এ এই tag দেখা যাবে</div>
+    </div>
+    <div class="form-field">
       <label class="form-label">Category</label>
       <select id="dlCategory" class="form-select">
         <option value="free">Free</option>
@@ -504,7 +531,6 @@ body::after{width:320px;height:320px;background:rgba(255,215,0,.14);bottom:-140p
   </div>
 </div>
 
-<!-- ORDER MODAL -->
 <div class="modal-overlay" id="orderModal">
   <div class="modal">
     <div class="modal-head">
@@ -528,7 +554,6 @@ body::after{width:320px;height:320px;background:rgba(255,215,0,.14);bottom:-140p
   </div>
 </div>
 
-<!-- AD MODAL -->
 <div class="modal-overlay" id="adModal">
   <div class="modal">
     <div class="modal-head">
@@ -561,7 +586,6 @@ body::after{width:320px;height:320px;background:rgba(255,215,0,.14);bottom:-140p
   </div>
 </div>
 
-<!-- MEDIA MODAL -->
 <div class="modal-overlay" id="mediaModal">
   <div class="modal">
     <div class="modal-head">
@@ -786,6 +810,19 @@ let ALL_DOWNLOADS = [];
 let DL_LISTENER_ATTACHED = false;
 let EDITING_DL_KEY = null;
 
+/* TAG LABELS */
+const TAG_LABELS = {
+  new:     { txt: '🆕 NEW',         cls: 'new' },
+  update:  { txt: '🔄 UPDATE',      cls: 'update' },
+  newver:  { txt: '🆕 NEW VERSION', cls: 'newver' },
+  nonroot: { txt: '🔓 NON ROOT',    cls: 'nonroot' },
+  root:    { txt: '🔐 ROOT',        cls: 'root' },
+  hot:     { txt: '🔥 HOT',         cls: 'hot' },
+  premium: { txt: '💎 PREMIUM',     cls: 'premium' },
+  free:    { txt: '🎁 FREE',        cls: 'free' },
+  best:    { txt: '⚡ BEST',        cls: 'best' }
+};
+
 function loadDownloadsList() {
   if (!db) return;
   const box = $('downloadsBox');
@@ -821,17 +858,20 @@ function downloadCardHTML(d) {
   const pwd = (d.password || '').trim();
   const description = (d.description || '').trim();
   const cat = (d.category || 'free').toLowerCase();
+  const tag = (d.tag || 'none').toLowerCase();
   const enabled = d.enabled !== false;
   const clicks = Number(d.clicks) || 0;
   const order = Number(d.order) || 999;
   const pwdChip = pwd ? `<span class="dl-chip pwd">🔐 ${escapeHtml(pwd)}</span>` : `<span class="dl-chip nopwd">🔓 NO</span>`;
   const descChip = description ? `<span class="dl-chip has-desc">📝 Has Desc</span>` : '';
   const descHtml = description ? `<div class="dl-desc">📝 ${escapeHtml(description)}</div>` : '';
+  const tagHtml = (tag !== 'none' && TAG_LABELS[tag]) ? `<div><span class="tag-chip ${TAG_LABELS[tag].cls}">${TAG_LABELS[tag].txt}</span></div>` : '';
   return `<div class="dl-card ${enabled?'':'disabled'}" data-key="${key}">
     <div class="dl-top">
       <div class="dl-ico">⬇</div>
       <div class="dl-info">
         <div class="dl-name">${escapeHtml(name)}</div>
+        ${tagHtml}
         ${descHtml}
         <div class="dl-link">${escapeHtml(link || '— no link —')}</div>
         <div class="dl-meta-row">
@@ -884,6 +924,7 @@ function openDownloadModal(item) {
   $('dlLink').value = item ? (item.link || '') : '';
   $('dlPassword').value = item ? (item.password || '') : '';
   $('dlCategory').value = item ? (item.category || 'free') : 'free';
+  $('dlTag').value = item ? (item.tag || 'none') : 'none';
   $('dlOrder').value = item ? (item.order || '') : (ALL_DOWNLOADS.length + 1);
   $('dlEnabled').checked = item ? (item.enabled !== false) : true;
   $('dlModal').classList.add('open');
@@ -896,11 +937,12 @@ function saveDownload() {
   const link = ($('dlLink').value || '').trim();
   const password = ($('dlPassword').value || '').trim();
   const category = $('dlCategory').value || 'free';
+  const tag = $('dlTag').value || 'none';
   const order = parseInt($('dlOrder').value) || 999;
   const enabled = $('dlEnabled').checked;
   if (name.length < 3) { showToast('❌ নাম কমপক্ষে ৩ অক্ষর'); $('dlName').focus(); return; }
   if (!link || !/^https?:\/\/.+/i.test(link)) { showToast('❌ সঠিক URL দিন'); $('dlLink').focus(); return; }
-  const data = { name, description, link, password, category, order, enabled };
+  const data = { name, description, link, password, category, tag, order, enabled };
   if (EDITING_DL_KEY) {
     db.ref('downloads/' + EDITING_DL_KEY).update(data)
       .then(() => { showToast('✅ Update', 'ok'); closeDownloadModal(); })
