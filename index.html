@@ -91,7 +91,6 @@ select.input option{background:#0E0716;color:#fff}
 .notice-banner .nb-ico{font-size:18px;flex-shrink:0}
 .notice-banner .nb-text{flex:1}
 
-/* ═══ PROFILE — Premium ═══ */
 .profile-box{text-align:center;padding:32px 18px 24px;position:relative;z-index:2;overflow:hidden}
 .profile-box::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent 0deg,rgba(255,215,0,.07) 60deg,transparent 120deg,rgba(255,26,0,.07) 240deg,transparent 300deg);animation:profileShine 12s linear infinite;pointer-events:none;z-index:0}
 @keyframes profileShine{to{transform:rotate(360deg)}}
@@ -144,11 +143,23 @@ select.input option{background:#0E0716;color:#fff}
 
 .dl-list{display:flex;flex-direction:column;gap:11px}
 .dl-item{position:relative}
-.dl-btn{display:flex;align-items:center;gap:12px;width:100%;cursor:pointer;padding:14px 16px;border-radius:14px;text-align:left;background:linear-gradient(135deg,#FFD700,#FFB800);color:#140900;font-family:var(--font-b);font-weight:700;font-size:15.5px;letter-spacing:.3px;box-shadow:0 7px 22px rgba(255,184,0,.26);transition:transform .14s ease;padding-right:96px}
+.dl-btn{display:flex;align-items:center;gap:12px;width:100%;cursor:pointer;padding:14px 16px;border-radius:14px;text-align:left;background:linear-gradient(135deg,#FFD700,#FFB800);color:#140900;font-family:var(--font-b);font-weight:700;font-size:15.5px;letter-spacing:.3px;box-shadow:0 7px 22px rgba(255,184,0,.26);transition:transform .14s ease;padding-right:96px;position:relative}
 .dl-btn:active{transform:scale(.975)}
 .dl-btn .ico{width:34px;height:34px;flex:0 0 34px;border-radius:9px;background:rgba(0,0,0,.16);display:flex;align-items:center;justify-content:center;font-size:18px}
 .dl-btn .txt{flex:1;line-height:1.35;min-width:0}
 .dl-btn .cnt{display:block;font-size:11px;font-weight:600;opacity:.7;font-family:var(--font-t);margin-top:2px}
+
+/* ═══ TAG BADGE (inside button) ═══ */
+.dl-tag{display:inline-block;font-family:var(--font-h);font-weight:900;font-size:9px;letter-spacing:.8px;padding:3px 8px;border-radius:6px;text-transform:uppercase;margin-bottom:4px;border:1px solid}
+.dl-tag.new{background:rgba(0,212,255,.22);color:#00B4E6;border-color:rgba(0,160,200,.5)}
+.dl-tag.update{background:rgba(59,139,255,.22);color:#2C6FD9;border-color:rgba(59,139,255,.5)}
+.dl-tag.newver{background:rgba(0,204,85,.22);color:#008B3D;border-color:rgba(0,160,60,.5)}
+.dl-tag.nonroot{background:rgba(179,102,255,.22);color:#8E44CC;border-color:rgba(150,80,220,.5)}
+.dl-tag.root{background:rgba(255,136,0,.22);color:#CC6E00;border-color:rgba(200,110,0,.5)}
+.dl-tag.hot{background:rgba(255,26,0,.22);color:#CC1400;border-color:rgba(200,20,0,.5)}
+.dl-tag.premium{background:rgba(184,140,0,.22);color:#8B6A00;border-color:rgba(140,105,0,.5)}
+.dl-tag.free{background:rgba(0,204,85,.22);color:#008B3D;border-color:rgba(0,160,60,.5)}
+.dl-tag.best{background:rgba(255,184,0,.24);color:#B36F00;border-color:rgba(180,140,0,.5)}
 
 .fav-btn{position:absolute;top:50%;right:52px;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.14);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:.2s;z-index:3;padding:0;line-height:1;color:#140900;opacity:.55}
 .fav-btn:hover{opacity:.85}
@@ -273,23 +284,16 @@ footer b{color:var(--gold)}
 .toast.ok{background:linear-gradient(135deg,rgba(0,160,90,.96),rgba(0,200,110,.96))}
 @keyframes toastIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
-/* ═══ 🌊 SMOOTH PAGE TRANSITIONS ═══ */
 .screen.active{animation:screenIn .55s cubic-bezier(.16,1,.3,1) both}
 @keyframes screenIn{from{opacity:0;transform:translateY(20px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
 
-/* ═══ 🎉 CONFETTI ═══ */
 .confetti-layer{position:fixed;inset:0;pointer-events:none;z-index:3000;overflow:hidden}
 .confetti-piece{position:absolute;width:9px;height:14px;top:-20px;opacity:.9;animation:confettiFall linear forwards}
-@keyframes confettiFall{
-  0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}
-  100%{transform:translateY(105vh) rotate(720deg) scale(.7);opacity:0}
-}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(105vh) rotate(720deg) scale(.7);opacity:0}}
 
-/* ═══ 📳 HAPTIC ═══ */
 @keyframes hapticPulse{0%,100%{transform:scale(1)}50%{transform:scale(.965)}}
 .haptic-tap{animation:hapticPulse .18s ease}
 
-/* ═══ 💀 LOADING SKELETON ═══ */
 .skel{background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.04) 75%);background-size:200% 100%;animation:skelShine 1.4s ease-in-out infinite;border-radius:12px}
 @keyframes skelShine{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .skel-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);margin-bottom:10px}
@@ -298,7 +302,6 @@ footer b{color:var(--gold)}
 .skel-line.w1{width:70%}
 .skel-line.w2{width:45%;height:9px;margin-top:8px}
 
-/* ═══ 🎭 RIPPLE EFFECT ═══ */
 .ripple{position:relative;overflow:hidden}
 .ripple-el{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);transform:scale(0);animation:rippleAnim .6s ease-out;pointer-events:none}
 @keyframes rippleAnim{to{transform:scale(4);opacity:0}}
@@ -598,7 +601,7 @@ function showInstallPrompt() {
   }
 }
 
-/* ✨ ANIMATED BACKGROUND PARTICLES */
+/* ✨ BACKGROUND PARTICLES */
 (function initParticles(){
   const canvas = $('bgParticles');
   if (!canvas) return;
@@ -606,18 +609,12 @@ function showInstallPrompt() {
   let W, H, particles = [];
   const COLORS = ['#FFD700', '#FF1A00', '#CC0000', '#00D4FF'];
   const COUNT = 28;
-
   function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
   function makeParticle(){
-    return {
-      x: Math.random() * W, y: Math.random() * H,
-      r: 1 + Math.random() * 2.4,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: -0.15 - Math.random() * 0.35,
+    return { x: Math.random() * W, y: Math.random() * H, r: 1 + Math.random() * 2.4,
+      vx: (Math.random() - 0.5) * 0.35, vy: -0.15 - Math.random() * 0.35,
       color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      alpha: 0.25 + Math.random() * 0.5,
-      pulse: Math.random() * Math.PI * 2
-    };
+      alpha: 0.25 + Math.random() * 0.5, pulse: Math.random() * Math.PI * 2 };
   }
   function init(){ resize(); particles = []; for (let i = 0; i < COUNT; i++) particles.push(makeParticle()); }
   function draw(){
@@ -628,15 +625,10 @@ function showInstallPrompt() {
       if (p.x < -10) p.x = W + 10;
       if (p.x > W + 10) p.x = -10;
       const a = p.alpha * (0.6 + 0.4 * Math.sin(p.pulse));
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.globalAlpha = a;
-      ctx.shadowBlur = 12;
-      ctx.shadowColor = p.color;
-      ctx.fill();
-      ctx.globalAlpha = 1;
-      ctx.shadowBlur = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color; ctx.globalAlpha = a;
+      ctx.shadowBlur = 12; ctx.shadowColor = p.color;
+      ctx.fill(); ctx.globalAlpha = 1; ctx.shadowBlur = 0;
     });
     requestAnimationFrame(draw);
   }
@@ -644,28 +636,18 @@ function showInstallPrompt() {
   init(); draw();
 })();
 
-/* 🌊 SMOOTH TRANSITION HELPER */
 function smoothScrollTo(el){
   if(!el) return;
   const y = el.getBoundingClientRect().top + window.pageYOffset - 80;
   window.scrollTo({ top: y, behavior: 'smooth' });
 }
-
-/* 📳 HAPTIC FEEDBACK */
-function haptic(ms){
-  try{
-    if (navigator.vibrate) navigator.vibrate(ms || 12);
-  }catch(e){}
-}
-
+function haptic(ms){ try{ if (navigator.vibrate) navigator.vibrate(ms || 12); }catch(e){} }
 function hapticTap(el){
   if(!el) return;
   el.classList.add('haptic-tap');
   setTimeout(() => el.classList.remove('haptic-tap'), 200);
   haptic(12);
 }
-
-/* 🎉 CONFETTI */
 function fireConfetti(count){
   count = count || 60;
   const layer = document.createElement('div');
@@ -676,8 +658,7 @@ function fireConfetti(count){
     p.className = 'confetti-piece';
     p.style.left = (Math.random() * 100) + 'vw';
     p.style.background = colors[Math.floor(Math.random() * colors.length)];
-    const dur = 2 + Math.random() * 1.8;
-    p.style.animationDuration = dur + 's';
+    p.style.animationDuration = (2 + Math.random() * 1.8) + 's';
     p.style.animationDelay = (Math.random() * 0.3) + 's';
     p.style.width = (6 + Math.random() * 8) + 'px';
     p.style.height = (10 + Math.random() * 10) + 'px';
@@ -687,8 +668,6 @@ function fireConfetti(count){
   document.body.appendChild(layer);
   setTimeout(() => layer.remove(), 4500);
 }
-
-/* 🎭 RIPPLE EFFECT */
 function attachRipple(el){
   if (!el || el.dataset.rippleBound === '1') return;
   el.dataset.rippleBound = '1';
@@ -701,18 +680,12 @@ function attachRipple(el){
     const span = document.createElement('span');
     span.className = 'ripple-el';
     span.style.width = span.style.height = size + 'px';
-    span.style.left = x + 'px';
-    span.style.top = y + 'px';
+    span.style.left = x + 'px'; span.style.top = y + 'px';
     el.appendChild(span);
     setTimeout(() => span.remove(), 650);
   });
 }
-
-function attachRippleAll(selector){
-  document.querySelectorAll(selector).forEach(attachRipple);
-}
-
-/* 💀 SKELETON LOADER */
+function attachRippleAll(selector){ document.querySelectorAll(selector).forEach(attachRipple); }
 function showDownloadSkeleton(){
   const wrap = $('freeList');
   if (!wrap) return;
@@ -729,7 +702,19 @@ function showDownloadSkeleton(){
   wrap.innerHTML = html;
 }
 
-/* FAVORITES */
+/* ═══ TAG LABELS ═══ */
+const TAG_LABELS = {
+  new:     { txt: '🆕 NEW',         cls: 'new' },
+  update:  { txt: '🔄 UPDATE',      cls: 'update' },
+  newver:  { txt: '🆕 NEW VERSION', cls: 'newver' },
+  nonroot: { txt: '🔓 NON ROOT',    cls: 'nonroot' },
+  root:    { txt: '🔐 ROOT',        cls: 'root' },
+  hot:     { txt: '🔥 HOT',         cls: 'hot' },
+  premium: { txt: '💎 PREMIUM',     cls: 'premium' },
+  free:    { txt: '🎁 FREE',        cls: 'free' },
+  best:    { txt: '⚡ BEST',        cls: 'best' }
+};
+
 const FAV_KEY = 'ffhub_favorites';
 function getFavorites(){ try { return JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); } catch(e) { return []; } }
 function saveFavorites(arr){ try { localStorage.setItem(FAV_KEY, JSON.stringify(arr)); } catch(e) {} }
@@ -776,8 +761,7 @@ function showToast(msg, type = '') {
   box.appendChild(t);
   setTimeout(() => {
     t.style.transition = 'opacity .3s ease, transform .3s ease';
-    t.style.opacity = '0';
-    t.style.transform = 'translateY(12px)';
+    t.style.opacity = '0'; t.style.transform = 'translateY(12px)';
     setTimeout(() => t.remove(), 320);
   }, 2200);
 }
@@ -879,7 +863,6 @@ function updateProfileStats() {
   }
   if ($('statFavCount')) $('statFavCount').textContent = getFavorites().length;
 }
-
 function updateFavoriteStats() {
   if ($('statFavCount')) $('statFavCount').textContent = getFavorites().length;
 }
@@ -926,11 +909,21 @@ function renderFreeList() {
     const clicks = Number(item.clicks) || 0;
     const isFav = isFavorite(item._key);
     const isHot = TRENDING_KEYS.indexOf(item._key) !== -1;
+    const tag = (item.tag || 'none').toLowerCase();
+    let tagHtml = '';
+    if (tag !== 'none' && TAG_LABELS[tag]) {
+      tagHtml = `<span class="dl-tag ${TAG_LABELS[tag].cls}">${TAG_LABELS[tag].txt}</span>`;
+    } else if (isHot) {
+      tagHtml = `<span class="dl-tag hot">🔥 HOT</span>`;
+    }
     html += `<div class="dl-item">
-      ${isHot ? '<span class="hot-badge">🔥 HOT</span>' : ''}
       <button class="dl-btn" data-key="${esc(item._key)}">
         <span class="ico">⬇</span>
-        <span class="txt">${esc(item.name)}<span class="cnt">${clicks} downloads</span></span>
+        <span class="txt">
+          ${tagHtml}
+          <span style="display:block">${esc(item.name)}</span>
+          <span class="cnt">${clicks} downloads</span>
+        </span>
       </button>
       <button class="fav-btn ${isFav?'on':''}" data-fav-key="${esc(item._key)}" aria-label="favorite">${isFav?'❤️':'♡'}</button>
     </div>`;
@@ -993,10 +986,8 @@ function copyPassword() {
   const pwd = CURRENT_PWD || 'NO';
   const btn = $('pwdCopyBtn');
   const done = () => {
-    btn.classList.add('copied');
-    btn.textContent = '✅ Copied';
-    showToast('✅ Password copied', 'ok');
-    haptic(20);
+    btn.classList.add('copied'); btn.textContent = '✅ Copied';
+    showToast('✅ Password copied', 'ok'); haptic(20);
     setTimeout(() => { btn.classList.remove('copied'); btn.textContent = '📋 Copy'; }, 1800);
   };
   if (navigator.clipboard && window.isSecureContext) {
@@ -1053,19 +1044,14 @@ function loadMyOrders() {
   const sec = $('myOrdersSection');
   const box = $('myOrdersList');
   if (!db || !sec || !box) return;
-
   const username = getSavedUser();
   if (!username) { sec.classList.add('hidden'); return; }
-
   db.ref('orders').orderByChild('username').equalTo(username).on('value', snap => {
     const data = snap.val() || {};
     const arr = Object.keys(data).map(k => Object.assign({ _key: k }, data[k]));
     arr.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
-
     if (!arr.length) { sec.classList.add('hidden'); if ($('statOrderCount')) $('statOrderCount').textContent = 0; return; }
-
     if ($('statOrderCount')) $('statOrderCount').textContent = arr.length;
-
     sec.classList.remove('hidden');
     box.innerHTML = arr.slice(0, 5).map(o => {
       const status = o.status || 'pending';
@@ -1095,8 +1081,7 @@ function doLogin() {
   if (!saveUser(name)) { showToast('❌ Could not save'); return; }
   saveUserToFirebase(name);
   showToast('✅ Welcome, ' + name + '!', 'ok');
-  fireConfetti(30);
-  haptic(25);
+  fireConfetti(30); haptic(25);
   input.value = '';
   openApp();
 }
@@ -1171,10 +1156,7 @@ const BRAND_LABELS = {
 function getPhonesDB() {
   try {
     const raw = localStorage.getItem(PHONES_KEY);
-    if (raw) {
-      const p = JSON.parse(raw);
-      if (p && typeof p === 'object' && Object.keys(p).length > 0) return p;
-    }
+    if (raw) { const p = JSON.parse(raw); if (p && typeof p === 'object' && Object.keys(p).length > 0) return p; }
   } catch(e) {}
   try { localStorage.setItem(PHONES_KEY, JSON.stringify(DEFAULT_PHONES)); } catch(e) {}
   return JSON.parse(JSON.stringify(DEFAULT_PHONES));
@@ -1188,9 +1170,7 @@ const FF_BASE = {
   8:  { gen:166, rd:164, s2:160, s4:154, sn:92,  fl:74, dpi:580, fb:44 },
   12: { gen:158, rd:156, s2:152, s4:146, sn:88,  fl:70, dpi:640, fb:42 }
 };
-
 function clamp(v, a, b){ return Math.round(Math.min(Math.max(v, a), b)); }
-
 function calcSensitivity(phone) {
   const [name, ram, hz, tuning] = phone;
   let ramKey = ram;
@@ -1239,7 +1219,6 @@ function loadModels(brand) {
   renderModelList(CURRENT_MODELS);
   list.classList.add('on');
 }
-
 function renderModelList(items) {
   const list = $('sensModelList');
   list.innerHTML = '';
@@ -1252,14 +1231,12 @@ function renderModelList(items) {
     list.appendChild(div);
   });
 }
-
 function pickModel(m) {
   SELECTED_MODEL = m;
   $('sensSearch').value = m[0];
   $('sensModelList').classList.remove('on');
   calculateSensitivity(m);
 }
-
 function calculateSensitivity(m) {
   const r = calcSensitivity(m);
   $('sensDevice').textContent = m[0] + ' · ' + m[1] + 'GB RAM · ' + m[2] + 'Hz';
@@ -1277,7 +1254,6 @@ function calculateSensitivity(m) {
   haptic(20);
   setTimeout(() => fireConfetti(35), 200);
 }
-
 function animate(el, to) {
   let cur = 0; const step = to / 22;
   const iv = setInterval(() => {
@@ -1289,7 +1265,6 @@ function animate(el, to) {
 function setBar(el, val, max) {
   setTimeout(() => { el.style.width = Math.min((val / max) * 100, 100) + '%'; }, 100);
 }
-
 function copyUniversal(text, btn, okText) {
   const done = () => { if (!btn) return; const o = btn.textContent; btn.textContent = okText; setTimeout(() => { btn.textContent = o; }, 1800); };
   if (navigator.clipboard && window.isSecureContext) {
@@ -1451,7 +1426,6 @@ document.addEventListener('DOMContentLoaded', function () {
   $('pwdCopyBtn').addEventListener('click', copyPassword);
   $('dlPopup').addEventListener('click', e => { if (e.target.id === 'dlPopup') closeDlPopup(); });
 
-  /* 🎭 RIPPLE on all buttons */
   setTimeout(() => {
     attachRippleAll('.btn');
     attachRippleAll('.dl-btn');
@@ -1460,13 +1434,11 @@ document.addEventListener('DOMContentLoaded', function () {
     attachRippleAll('.ft-btn');
   }, 400);
 
-  /* 📳 HAPTIC global on important taps */
   document.addEventListener('click', function(e){
     const el = e.target.closest('.btn, .cat-btn, .ram-btn, .ft-btn, .fav-btn');
     if (el) haptic(12);
   }, true);
 
-  /* 💀 Skeleton before downloads load (only if logged in) */
   if (getSavedUser()) showDownloadSkeleton();
 
   document.addEventListener('contextmenu', function(e){
