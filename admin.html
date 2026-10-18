@@ -132,7 +132,6 @@ body::after{width:320px;height:320px;background:rgba(255,215,0,.14);bottom:-140p
 .dl-actions{display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.06);padding-top:10px}
 .dl-actions .u-btn{flex:1;min-width:80px;text-align:center}
 
-/* ═══ TAG CHIPS ═══ */
 .tag-chip{display:inline-block;font-family:var(--font-b);font-weight:800;font-size:9.5px;padding:3px 9px;border-radius:6px;letter-spacing:.6px;text-transform:uppercase;margin-top:6px;border:1px solid transparent}
 .tag-chip.new{background:rgba(0,212,255,.18);color:#00D4FF;border-color:rgba(0,212,255,.5)}
 .tag-chip.update{background:rgba(59,139,255,.18);color:#3B8BFF;border-color:rgba(59,139,255,.5)}
@@ -810,7 +809,6 @@ let ALL_DOWNLOADS = [];
 let DL_LISTENER_ATTACHED = false;
 let EDITING_DL_KEY = null;
 
-/* TAG LABELS */
 const TAG_LABELS = {
   new:     { txt: '🆕 NEW',         cls: 'new' },
   update:  { txt: '🔄 UPDATE',      cls: 'update' },
@@ -831,10 +829,12 @@ function loadDownloadsList() {
     db.ref('downloads').on('value', snap => {
       const data = snap.val() || {};
       ALL_DOWNLOADS = Object.keys(data).map(k => Object.assign({ _key: k }, data[k]));
+      // Sort DESCENDING so newest ones are on top in Admin Panel
       ALL_DOWNLOADS.sort((a,b) => {
-        const ao = Number(a.order) || 999, bo = Number(b.order) || 999;
-        if (ao !== bo) return ao - bo;
-        return (a.name || '').localeCompare(b.name || '');
+        const ao = Number(a.order) || 0;
+        const bo = Number(b.order) || 0;
+        if (ao !== bo) return bo - ao;
+        return (b.createdAt || 0) - (a.createdAt || 0);
       });
       filterAndRenderDownloads();
     }, err => { box.innerHTML = '<div class="empty-state">❌ ' + err.message + '</div>'; });
@@ -942,13 +942,16 @@ function saveDownload() {
   const enabled = $('dlEnabled').checked;
   if (name.length < 3) { showToast('❌ নাম কমপক্ষে ৩ অক্ষর'); $('dlName').focus(); return; }
   if (!link || !/^https?:\/\/.+/i.test(link)) { showToast('❌ সঠিক URL দিন'); $('dlLink').focus(); return; }
+  
   const data = { name, description, link, password, category, tag, order, enabled };
+  
   if (EDITING_DL_KEY) {
     db.ref('downloads/' + EDITING_DL_KEY).update(data)
       .then(() => { showToast('✅ Update', 'ok'); closeDownloadModal(); })
       .catch(e => showToast('❌ ' + e.message));
   } else {
     data.clicks = 0;
+    data.createdAt = Date.now(); // Added creation time
     db.ref('downloads').push(data)
       .then(() => { showToast('✅ নতুন Download', 'ok'); closeDownloadModal(); })
       .catch(e => showToast('❌ ' + e.message));
