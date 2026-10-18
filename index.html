@@ -149,23 +149,12 @@ select.input option{background:#0E0716;color:#fff}
 .dl-btn .txt{flex:1;line-height:1.35;min-width:0}
 .dl-btn .cnt{display:block;font-size:11px;font-weight:600;opacity:.7;font-family:var(--font-t);margin-top:2px}
 
-/* ═══ TAG BADGE — outside, top-left of button ═══ */
+/* ═══ TAG BADGE ═══ */
 .dl-tag{
-  position:absolute;
-  top:-4px;
-  left:8px;
-  display:inline-block;
-  font-family:var(--font-h);
-  font-weight:900;
-  font-size:9.5px;
-  letter-spacing:.7px;
-  padding:4px 11px;
-  border-radius:99px;
-  text-transform:uppercase;
-  z-index:6;
-  border:1.5px solid;
-  line-height:1;
-  white-space:nowrap;
+  position:absolute;top:-4px;left:8px;display:inline-block;
+  font-family:var(--font-h);font-weight:900;font-size:9.5px;letter-spacing:.7px;
+  padding:4px 11px;border-radius:99px;text-transform:uppercase;z-index:6;
+  border:1.5px solid;line-height:1;white-space:nowrap;
 }
 .dl-tag.new{background:linear-gradient(135deg,#00D4FF,#0088CC);color:#fff;border-color:#00D4FF;box-shadow:0 4px 14px rgba(0,212,255,.55)}
 .dl-tag.update{background:linear-gradient(135deg,#3B8BFF,#1E5FD9);color:#fff;border-color:#3B8BFF;box-shadow:0 4px 14px rgba(59,139,255,.55)}
@@ -902,9 +891,10 @@ function renderFreeList() {
   }
   if (DL_FILTER !== 'hot') {
     items.sort((a,b) => {
-      const ao = Number(a.order) || 999, bo = Number(b.order) || 999;
-      if (ao !== bo) return ao - bo;
-      return (a.name || '').localeCompare(b.name || '');
+      const ao = Number(a.order) || 0;
+      const bo = Number(b.order) || 0;
+      if (ao !== bo) return bo - ao; // Newest added first
+      return (b.createdAt || 0) - (a.createdAt || 0); // If no order, sort by date
     });
   }
 
@@ -1471,7 +1461,7 @@ document.addEventListener('DOMContentLoaded', function () {
       el.style.background = 'linear-gradient(135deg,rgba(0,136,204,.96),rgba(0,169,224,.96))';
       el.innerHTML = '📲 Tap here to install as App';
       el.addEventListener('click', () => {
-        localStorage.setItem('ffhub_pwa_prompted', '1');
+        localStorage.setItem(pwaKey, '1');
         showInstallPrompt();
         el.remove();
       });
