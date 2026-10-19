@@ -14,6 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- ✅ Font Awesome (নতুন যোগ করা) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -553,7 +555,7 @@ footer b{color:var(--gold)}
       <button class="pwd-copy-btn" id="pwdCopyBtn" type="button">📋 Copy</button>
     </div>
     <button class="dl-popup-dl-btn" id="dlPopupDownloadBtn">
-      ⬇ <span id="dlPopupBtnText">DOWNLOAD</span>
+      <i class="fa-solid fa-download"></i> <span id="dlPopupBtnText">DOWNLOAD</span>
     </button>
     <button class="dl-popup-close" id="dlPopupCloseBtn">✕ Close</button>
   </div>
@@ -893,8 +895,8 @@ function renderFreeList() {
     items.sort((a,b) => {
       const ao = Number(a.order) || 0;
       const bo = Number(b.order) || 0;
-      if (ao !== bo) return bo - ao; // Newest added first
-      return (b.createdAt || 0) - (a.createdAt || 0); // If no order, sort by date
+      if (ao !== bo) return bo - ao;
+      return (b.createdAt || 0) - (a.createdAt || 0);
     });
   }
 
@@ -925,7 +927,7 @@ function renderFreeList() {
     html += `<div class="dl-item">
       ${tagCls ? `<span class="dl-tag ${tagCls}">${tagTxt}</span>` : ''}
       <button class="dl-btn" data-key="${esc(item._key)}">
-        <span class="ico">⬇</span>
+        <span class="ico"><i class="fa-solid fa-download"></i></span>
         <span class="txt">
           <span style="display:block">${esc(item.name)}</span>
           <span class="cnt">${clicks} downloads</span>
