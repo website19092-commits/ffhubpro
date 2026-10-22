@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- ✅ Font Awesome (নতুন যোগ করা) -->
+<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -23,6 +23,7 @@
   --bg:#050208;--red:#CC0000;--red2:#FF1A00;
   --gold:#FFD700;--gold2:#FFB800;
   --cyan:#00D4FF;--cyan2:#0088CC;
+  --purple:#B366FF;--purple2:#8A2BE2;
   --text:#F6F1FF;--muted:#948AA8;
   --line:rgba(255,255,255,.10);--line-gold:rgba(255,215,0,.22);--radius:18px;
   --font-h:'Orbitron',sans-serif;--font-b:'Rajdhani',sans-serif;--font-t:'Inter',sans-serif;
@@ -124,13 +125,30 @@ select.input option{background:#0E0716;color:#fff}
 .pfp-stat .ps-lbl{font-family:var(--font-b);font-weight:600;font-size:10.5px;letter-spacing:1.2px;color:var(--muted);text-transform:uppercase}
 .pfp-stat + .pfp-stat{border-left:1px solid rgba(255,255,255,.08)}
 
+/* ═══ CATEGORY BUTTONS ═══ */
 .cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .cat-btn{padding:18px 12px;border-radius:16px;cursor:pointer;text-align:center;font-family:var(--font-h);font-weight:800;font-size:13px;letter-spacing:1px;line-height:1.6;transition:transform .15s,box-shadow .25s,border-color .25s;border:1px solid transparent}
 .cat-btn:active{transform:scale(.96)}
 .cat-free{background:linear-gradient(135deg,#00D4FF,#0088CC);color:#001A26;box-shadow:0 8px 24px rgba(0,180,255,.38)}
 .cat-paid{background:linear-gradient(135deg,#CC0000,#FF1A00);color:#fff;box-shadow:0 8px 24px rgba(204,0,0,.36)}
+.cat-styler{grid-column:span 2;background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;box-shadow:0 8px 24px rgba(138,43,226,.38);border:1px solid rgba(255,255,255,.2);margin-top:4px}
 .cat-btn.on{border-color:#fff;box-shadow:0 0 22px rgba(255,255,255,.35),0 8px 24px rgba(255,184,0,.35)}
 
+/* ═══ STYLISH NAME PAGE ═══ */
+#stylerScreen { background: var(--bg); min-height: 100vh; }
+#stylerScreen .header-in { justify-content: flex-start; }
+.back-btn { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); color: #fff; font-family: var(--font-b); font-weight: 700; padding: 8px 14px; border-radius: 10px; display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; transition: .2s; }
+.back-btn:active { transform: scale(.95); background: rgba(255,255,255,.15); }
+.styler-card { background: linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); border: 1px solid rgba(179,102,255,.3); border-radius: var(--radius); padding: 16px; margin-top: 10px; }
+.styler-list { display: flex; flex-direction: column; gap: 10px; padding-bottom: 40px; }
+.styler-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px 16px; transition: all 0.2s ease; }
+.styler-item:hover { border-color: rgba(179,102,255,.5); background: rgba(179,102,255,.05); }
+.styler-text { font-family: var(--font-t); font-size: 15px; color: #fff; word-break: break-all; white-space: pre-wrap; line-height: 1.5; flex: 1; text-align: center; }
+.styler-copy-btn { width: 38px; height: 38px; border-radius: 10px; background: rgba(179,102,255, 0.15); color: var(--purple); border: 1px solid rgba(179,102,255, 0.4); display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; flex-shrink: 0; transition: all 0.2s ease; }
+.styler-copy-btn:active { transform: scale(0.9); }
+.styler-copy-btn.copied { background: linear-gradient(135deg, #00A55A, #00CC66); border-color: #00CC55; color: #fff; }
+
+/* ═══ DOWNLOADS & OTHER UTILS ═══ */
 .dl-search-wrap{position:relative;margin-bottom:12px}
 .dl-search-wrap input{width:100%;padding:13px 16px 13px 42px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);color:#fff;font-size:14.5px;font-family:var(--font-t);transition:border-color .2s}
 .dl-search-wrap input::placeholder{color:#7C7390}
@@ -141,7 +159,7 @@ select.input option{background:#0E0716;color:#fff}
 .filter-tabs::-webkit-scrollbar{display:none}
 .ft-btn{padding:9px 16px;border-radius:99px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:var(--muted);font-family:var(--font-b);font-weight:700;font-size:12.5px;cursor:pointer;transition:.18s;letter-spacing:.3px;white-space:nowrap;flex-shrink:0}
 .ft-btn:active{transform:scale(.95)}
-.ft-btn.active{background:linear-gradient(135deg,#FFD700,#FFB800);color:#140900;border-color:#FFB800;box-shadow:0 4px 14px rgba(255,184,0,.35)}
+.ft-btn.active{background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;border-color:var(--purple);box-shadow:0 4px 14px rgba(138,43,226,.35)}
 
 .dl-list{display:flex;flex-direction:column;gap:20px}
 .dl-item{position:relative;padding-top:6px}
@@ -151,13 +169,7 @@ select.input option{background:#0E0716;color:#fff}
 .dl-btn .txt{flex:1;line-height:1.35;min-width:0}
 .dl-btn .cnt{display:block;font-size:11px;font-weight:600;opacity:.7;font-family:var(--font-t);margin-top:2px}
 
-/* ═══ TAG BADGE ═══ */
-.dl-tag{
-  position:absolute;top:-4px;left:8px;display:inline-block;
-  font-family:var(--font-h);font-weight:900;font-size:9.5px;letter-spacing:.7px;
-  padding:4px 11px;border-radius:99px;text-transform:uppercase;z-index:6;
-  border:1.5px solid;line-height:1;white-space:nowrap;
-}
+.dl-tag{position:absolute;top:-4px;left:8px;display:inline-block;font-family:var(--font-h);font-weight:900;font-size:9.5px;letter-spacing:.7px;padding:4px 11px;border-radius:99px;text-transform:uppercase;z-index:6;border:1.5px solid;line-height:1;white-space:nowrap;}
 .dl-tag.new{background:linear-gradient(135deg,#00D4FF,#0088CC);color:#fff;border-color:#00D4FF;box-shadow:0 4px 14px rgba(0,212,255,.55)}
 .dl-tag.update{background:linear-gradient(135deg,#3B8BFF,#1E5FD9);color:#fff;border-color:#3B8BFF;box-shadow:0 4px 14px rgba(59,139,255,.55)}
 .dl-tag.newver{background:linear-gradient(135deg,#00CC55,#009940);color:#fff;border-color:#00CC55;box-shadow:0 4px 14px rgba(0,204,85,.55)}
@@ -178,6 +190,7 @@ select.input option{background:#0E0716;color:#fff}
 .dl-empty{padding:26px 20px;text-align:center;font-family:var(--font-b);font-size:14px;color:var(--muted);background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.14);border-radius:14px;letter-spacing:.5px;line-height:1.7}
 .dl-empty b{color:var(--gold)}
 
+/* Other existing styles... */
 .orders-list{display:flex;flex-direction:column;gap:10px}
 .my-order{background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:14px;padding:14px 16px;border-left:3px solid var(--gold)}
 .my-order.approved{border-left-color:var(--green)}
@@ -355,8 +368,8 @@ footer b{color:var(--gold)}
   </div>
 </div>
 
+<!-- MAIN APP SCREEN -->
 <div id="appScreen" class="screen">
-
   <header id="mainHeader">
     <div class="header-in">
       <div class="brand">
@@ -371,7 +384,6 @@ footer b{color:var(--gold)}
   </header>
 
   <div class="wrap">
-
     <div id="noticeBanner" class="notice-banner hidden">
       <span class="nb-ico">📢</span>
       <span class="nb-text" id="noticeText"></span>
@@ -407,9 +419,12 @@ footer b{color:var(--gold)}
       <div id="myOrdersList" class="orders-list"></div>
     </section>
 
+    <!-- Main Category Grid -->
     <div class="cat-grid sec">
       <div class="cat-btn cat-free" id="catFreeBtn">𝐅𝐅 𝐒𝐄𝐍𝐒𝐈𝐓𝐈𝐕𝐄<br>[𝙵𝚁𝙴𝙴]</div>
       <div class="cat-btn cat-paid" id="catPaidBtn">𝐅𝐅 𝐒𝐄𝐍𝐒𝐈𝐓𝐈𝐕𝐄<br>[𝙿𝙰𝙸𝙳]</div>
+      <!-- Stylish Name Button -->
+      <div class="cat-btn cat-styler" id="openStylerBtn">✨ STYLISH NAME<br>[𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙾𝚁]</div>
     </div>
 
     <section id="freeSection" class="sec hidden">
@@ -541,10 +556,40 @@ footer b{color:var(--gold)}
     </section>
 
   </div>
-
   <footer>© 2025 <b id="footerBrand">𝐅𝐅 𝐇𝐔𝐁 𝐏𝐑𝐎 ˢᵐ</b> — All Rights Reserved</footer>
 </div>
 
+<!-- ✨ NEW STYLER SCREEN (Opens when clicking the button) -->
+<div id="stylerScreen" class="screen">
+  <header id="mainHeader">
+    <div class="header-in">
+      <button class="back-btn" id="backFromStylerBtn">
+        <i class="fa-solid fa-arrow-left"></i> Back
+      </button>
+      <div class="brand" style="margin-left:auto; margin-right:auto; transform:translateX(-20px)">
+        <span class="brand-name" style="font-size:14px">NAME GENERATOR</span>
+      </div>
+    </div>
+  </header>
+  
+  <div class="wrap" style="padding-top:16px;">
+    <div class="styler-card">
+      <input id="stylerInput" class="input" type="text" placeholder="Type your name here..." autocomplete="off" style="text-align:center;font-weight:bold;font-size:16px;border-color:var(--purple);">
+      
+      <div class="filter-tabs" id="stylerTabs" style="margin-top:14px;margin-bottom:16px;">
+        <button class="ft-btn active" data-tab="love">❤️ Love</button>
+        <button class="ft-btn" data-tab="ff">🔥 Free Fire</button>
+        <button class="ft-btn" data-tab="special">✨ Special</button>
+      </div>
+
+      <div id="stylerResults" class="styler-list">
+        <div class="dl-empty">Type your name above to see styles...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DOWNLOAD POPUP -->
 <div class="dl-popup-overlay" id="dlPopup">
   <div class="dl-popup">
     <div class="dl-popup-user" id="dlPopupUser">#USERNAME</div>
@@ -657,7 +702,7 @@ function fireConfetti(count){
   count = count || 60;
   const layer = document.createElement('div');
   layer.className = 'confetti-layer';
-  const colors = ['#FFD700','#FF1A00','#CC0000','#00D4FF','#00CC55','#FFFFFF'];
+  const colors = ['#FFD700','#FF1A00','#CC0000','#00D4FF','#00CC55','#FFFFFF', '#B366FF'];
   for (let i = 0; i < count; i++){
     const p = document.createElement('div');
     p.className = 'confetti-piece';
@@ -1305,8 +1350,12 @@ document.addEventListener('DOMContentLoaded', function () {
   $('usernameInput').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
   $('enterBtn').addEventListener('click', doLogin);
   $('logoutBtn').addEventListener('click', doLogout);
+  
+  // Navigation Events
   $('catFreeBtn').addEventListener('click', () => showCategory('free'));
   $('catPaidBtn').addEventListener('click', () => showCategory('paid'));
+  $('openStylerBtn').addEventListener('click', () => { showScreen('stylerScreen'); haptic(15); });
+  $('backFromStylerBtn').addEventListener('click', () => { showScreen('appScreen'); haptic(15); });
 
   const dsi = $('dlSearchInput');
   if (dsi) dsi.addEventListener('input', function() { DL_SEARCH = this.value.trim(); renderFreeList(); });
@@ -1434,6 +1483,232 @@ document.addEventListener('DOMContentLoaded', function () {
   $('pwdCopyBtn').addEventListener('click', copyPassword);
   $('dlPopup').addEventListener('click', e => { if (e.target.id === 'dlPopup') closeDlPopup(); });
 
+  // ═══ STYLISH NAME GENERATOR LOGIC ═══
+  const FONTS = {
+    bold: "𝐀𝐁𝐂𝐃𝐄𝐅𝐆𝐇𝐈𝐉𝐊𝐋𝐌𝐍𝐎𝐏𝐐𝐑𝐒𝐓𝐔𝐕𝐖𝐗𝐘𝐙𝐚𝐛𝐜𝐝𝐞𝐟𝐠𝐡𝐢𝐣𝐤𝐥𝐦𝐧𝐨𝐩𝐪𝐫𝐬𝐭𝐮𝐯𝐰𝐱𝐲𝐳",
+    italic: "𝐴𝐵𝐶𝐷𝐸𝐹𝐺𝐻𝐼𝐽𝐾𝐿𝑀𝑁𝑂𝑃𝑄𝑅𝑆𝑇𝑈𝑉𝑊𝑋𝑌𝑍𝑎𝑏𝑐𝑑𝑒𝑓𝑔ℎ𝑖𝑗𝑘𝑙𝑚𝑛𝑜𝑝𝑞𝑟𝑠𝑡𝑢𝑣𝑤𝑥𝑦𝑧",
+    boldItalic: "𝑨𝑩𝑪𝑫𝑬𝑭𝑮𝑯𝑰𝑱𝑲𝑳𝑴𝑵𝑶𝑷𝑸𝑹𝑺𝑻𝑼𝑽𝑾𝑿𝒀𝒁𝒂𝒃𝒄𝒅𝒆𝒇𝒈𝒉𝒊𝒋𝒌𝒍𝒎𝒏𝒐𝒑𝒒𝒓𝒔𝒕𝒖𝒗𝒘𝒙𝒚𝒛",
+    script: "𝒜ℬ𝒞𝒟ℰℱ𝒢ℋℐ𝒥𝒦ℒℳ𝒩𝒪𝒫𝒬ℛ𝒮𝒯𝒰𝒱𝒲𝒳𝒴𝒵𝒶𝒷𝒸𝒹ℯ𝒻ℊ𝒽𝒾𝒿𝓀𝓁𝓂𝓃ℴ𝓅𝓆𝓇𝓈𝓉𝓊𝓋𝓌𝓍𝓎𝓏",
+    boldScript: "𝓐𝓑𝓒𝓓𝓔𝓕𝓖𝓗𝓘𝓙𝓚𝓛𝓜𝓝𝓞𝓟𝓠𝓡𝓢𝓣𝓤𝓥𝓦𝓧𝓨𝓩𝓪𝓫𝓬𝓭𝓮𝓯𝓰𝓱𝓲𝓳𝓴𝓵𝓶𝓷𝓸𝓹𝓺𝓻𝓼𝓽𝓾𝓿𝔀𝔁𝔂𝔃",
+    fraktur: "𝔄𝔅ℭ𝔇𝔈𝔉𝔊ℌℑ𝔍𝔎𝔏𝔐𝔑𝔒𝔓𝔔ℜ𝔖𝔗𝔘𝔙𝔚𝔛𝔜ℨ𝔞𝔟𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔷",
+    doubleStruck: "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝕔𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫",
+    sansBold: "𝗔𝗕𝗖𝗗𝗘𝗙𝗚𝗛𝗜𝗝𝗞𝗟𝗠𝗡𝗢𝗣𝗤𝗥𝗦𝗧𝗨𝗩𝗪𝗫𝗬𝗭𝗮𝗯𝗰𝗱𝗲𝗳𝗴𝗵𝗶𝗷𝗸𝗹𝗺𝗻𝗼𝗽𝗾𝗿𝘀𝘁𝘂𝘃𝘄𝘅𝘆𝘇",
+    sansItalic: "𝘈𝘉𝘊𝘋𝘌𝘍𝘎𝘏𝘐𝘑𝘒𝘓𝘔𝘕𝘖𝘗𝘘𝘙𝘚𝘛𝘜𝘝𝘞𝘟𝘠𝘡𝘢𝘣𝘤𝘥𝘦𝘧𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘲𝘳𝘴𝘵𝘶𝘷𝘸𝘹𝘺𝘻",
+    sansBoldItalic: "𝘼𝘽𝘾𝘿𝙀𝙁𝙂𝙃𝙄𝙅𝙆𝙇𝙈𝙉𝙊𝙋𝙌𝙍𝙎𝙏𝙐𝙑𝙒𝙓𝙔𝙕𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝙤𝙥𝙦𝙧𝙨𝙩𝙪𝙫𝙬𝙭𝙮𝙯",
+    mono: "𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝚊𝚋𝚌𝚍𝚎𝚏𝚐𝚑𝚒𝚓𝚔𝚕𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣",
+    fullwidth: "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ",
+    circled: "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ",
+    bubble: "🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩",
+    squared: "🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉",
+    negative_squared: "🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉",
+    boldFraktur: "𝕬𝕭𝕮𝕯𝕰𝕱𝕲𝕳𝕴𝕵𝕶𝕷𝕸𝕹𝕺𝕻𝕼𝕽𝕾𝕿𝖀𝖁𝖂𝖃𝖄𝖅𝖆𝖇𝖈𝖉𝖊𝖋𝖌𝖍𝖎𝖏𝖐𝖑𝖒𝖓𝖔𝖕𝖖𝖗𝖘𝖙𝖚𝖛𝖜𝖝𝖞𝖟",
+    ff_smallcaps: "ᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢ"
+  };
+
+  const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+  function convertText(text, type) {
+    if (!type || type === 'plain') return text;
+    if (type.startsWith('ff_')) {
+       if (type === 'ff_ur_smallcaps' || type === 'ff_smallcaps') type = 'ff_smallcaps';
+       else type = 'bold'; // Fallback for obscure ones
+    }
+    const mapStr = FONTS[type];
+    if (!mapStr || mapStr.length !== ALPHABET.length) return text;
+    
+    return text.split('').map(c => {
+      const idx = ALPHABET.indexOf(c);
+      return idx !== -1 ? mapStr[idx] : c;
+    }).join('');
+  }
+
+  const STYLE_TEMPLATES = {
+    love: [
+      { template: "💘(っ´∀｀)っ {name}っ(´∀｀っ)💘", converter: "plain" },
+      { template: "ꕤ╰(°▽°)╯ꕤ {name} ꕤ╰(°▽°)╯ꕤ", converter: "plain" },
+      { template: "♡༄ {name} ༄♡", converter: "plain" },
+      { template: "⸝⸝⸝♡⸝⸝⸝ {name} ⸝⸝⸝♡⸝⸝⸝", converter: "plain" },
+      { template: "♥︎‧₊˚ {name} ˚₊‧♥︎", converter: "plain" },
+      { template: "⭑(｡♡‿♡｡)⭑ {name}", converter: "plain" },
+      { template: "💝•°¯`•• {name} ••´¯°•💝", converter: "plain" },
+      { template: "ꕥ♡ꕥ {name} ꕥ♡ꕥ", converter: "plain" },
+      { template: "♡̆̈ {name} ♡̆̈", converter: "plain" },
+      { template: "꧁𓆩❤︎𓆪꧂ {name} ꧁𓆩❤︎𓆪꧂", converter: "plain" },
+      { template: "❥◦•♥ {name} ♥•◦❥", converter: "plain" },
+      { template: "♡(ღ◕ܫ◕ღ) {name}", converter: "plain" },
+      { template: "ღ(◕‿◕｡)ღ {name}", converter: "plain" },
+      { template: "♡ෆ꒰ঌ {name} ໒꒱ෆ♡", converter: "plain" },
+      { template: "✧♥︎✧ {name} ✧♥︎✧", converter: "plain" },
+      { template: "♥︎︎💖 {name} 💖♥︎︎", converter: "plain" },
+      { template: "꧁𓆩♡𓆪꧂ {name} ꧁𓆩♡𓆪꧂", converter: "plain" },
+      { template: "ﮩ٨ـﮩﮩ٨ـ {name}ﮩ٨ـﮩﮩ٨ـ", converter: "boldItalic" },
+      { template: "︵‿୨ {name}୧‿︵", converter: "boldScript" },
+      { template: "˗ˋˏ°♡ {name} ♡°ˎˊ˗", converter: "doubleStruck" },
+      { template: "💕(´‿`) {name} ᎥᏝᵒᵛᵉϋෆ*", converter: "plain" },
+      { template: "(っ’-‘)╮ =͟͟͞͞♡ {name} =͟͟͞͞♡", converter: "fraktur" },
+      { template: "(๑′ᴗ‵๑) {name} Ｉ Lᵒᵛᵉᵧₒᵤ♡", converter: "boldScript" },
+      { template: "˗ˋˏ ♡ {name} ˎˊ˗", converter: "sansBoldItalic" },
+      { template: "ʕ♡ᴥ♡ʔ {name} ǝʌol", converter: "sansItalic" },
+      { template: "—̳͟͞͞💗 {name}", converter: "sansBold" },
+      { template: "١٥٧٤♡ {name} ♡", converter: "doubleStruck" },
+      { template: "◟(ᵔ ̮ ᵔ)͜💐 {name}", converter: "fullwidth" },
+      { template: "෴❤️ {name}❤️෴", converter: "boldScript" },
+      { template: "Ꮭövє {name}*❤︎┈༝༚༝༚♡ﾞ", converter: "boldItalic" },
+      { template: "(ღˇ◡ˇ)♥ {name} ♥ℒᵒᵛᵉᵧₒᵤ♥", converter: "sansBoldItalic" },
+      { template: "ʚ ꒒ ꒩ ꒦ ꒰ ɞ {name}", converter: "plain" },
+      { template: "[_̅_̅𝑰_̅❤_̅𝒚̲̅𝒐̲̅𝒖̲̅_̅_̅] {name}", converter: "mono" },
+      { template: "[̲̅ə̲̅٨̲̅٥̲̅٦̲̅] {name}", converter: "boldItalic" },
+      { template: "L䷼䷊☰ {name}", converter: "bold" },
+      { template: "(ˆڡˆ)◞ {name} 🍫", converter: "plain" },
+      { template: "(˶ ˘ ³˘)ˆᵕ ˆ˶) {name}", converter: "boldScript" },
+      { template: "{name}˶ᵔ ᵕ ᵔ˶ ا▄︻┻┳═一~♡︎", converter: "plain" },
+      { template: "(∩˃o˂∩)♡3 {name}", converter: "sansBoldItalic" },
+      { template: "*•.¸♡ {name} ♡¸.•*", converter: "plain" }
+    ],
+    ff: [
+      { template: "ᴳᵒᵈ𐍉ƒ{name}", converter: "plain" },
+      { template: "★ᴄ͢͢͢ʀɪᴍɪɴᴀʟ {name} ⁰⁰⁷★࿐", converter: "mono" },
+      { template: "︻╦̵̵̿╤─{name}♥", converter: "fullwidth" },
+      { template: "ᏦᏁᏋ✿{name}꧁", converter: "fullwidth" },
+      { template: "☸{name}࿐", converter: "plain" },
+      { template: "『{name}』０００７𒆜", converter: "fullwidth" },
+      { template: "★彡{name}₄₄₄彡★", converter: "fullwidth" },
+      { template: "Ꮪɪʟᴇɴᴛ☬{name}", converter: "ff_smallcaps" },
+      { template: "⚡{name}⚡", converter: "bold" },
+      { template: "꧁•{name}࿐", converter: "plain" },
+      { template: "꧁•{name}YT࿐", converter: "plain" },
+      { template: "꧁• King 々 {name}࿐", converter: "plain" },
+      { template: "𓆩{name}𓆪꧂", converter: "fullwidth" },
+      { template: "Sᴋ᭄{name}ᴮᴼˢˢツ", converter: "ff_smallcaps" },
+      { template: "Sᴋ᭄{name}ᴮᴼˢˢ亗", converter: "ff_smallcaps" },
+      { template: "꧁Sᴋ᭄{name}ᴮᴼˢˢ꧂", converter: "ff_smallcaps" },
+      { template: "〆{name}々", converter: "fullwidth" },
+      { template: "亗ᵀʰᵉ᭄{name}亗", converter: "plain" },
+      { template: "༆{name}亗", converter: "fullwidth" },
+      { template: "ⓟⓡⓞ么{name}", converter: "plain" },
+      { template: "꧁ꪾᴍʀ͢.{name}꧂", converter: "plain" },
+      { template: "☯{name}☃️࿐", converter: "plain" },
+      { template: "꧁༺{name}༻꧂", converter: "plain" },
+      { template: "ᴳᵒᵈツ{name}⚡", converter: "plain" },
+      { template: "彡★{name}★彡", converter: "negative_squared" },
+      { template: "❖{name}メ™", converter: "plain" },
+      { template: "꧁{name}𒆜", converter: "plain" },
+      { template: "░{name}░•ツ", converter: "plain" },
+      { template: "꧁{name}꧂", converter: "plain" },
+      { template: "『𝕯𝖊𝖒𝖔𝖓𐍉{name}』", converter: "fullwidth" },
+      { template: "☠︎{name}☠︎", converter: "plain" },
+      { template: "乂{name}乂", converter: "fullwidth" },
+      { template: "✿{name}✿", converter: "plain" },
+      { template: "☬『𖤍{name}𖤍』☬", converter: "fullwidth" },
+      { template: "꧁⚡{name}⚡꧂", converter: "ff_smallcaps" },
+      { template: "▄︻デ{name}══━一", converter: "fraktur" },
+      { template: "乂{name}丶乂", converter: "fullwidth" },
+      { template: "『{name}』", converter: "bubble" },
+      { template: "❖꧁💀{name}💀꧂❖", converter: "ff_smallcaps" },
+      { template: "❖{name}❖", converter: "bold" },
+      { template: "☆彡{name}彡☆", converter: "plain" },
+      { template: "꧁❖{name}☠", converter: "plain" },
+      { template: "𓆩{name}𓆪", converter: "fraktur" },
+      { template: "✪{name}✪", converter: "bold" },
+      { template: "♜{name}♜", converter: "fullwidth" },
+      { template: "『☠︎{name}☠︎』", converter: "fullwidth" },
+      { template: "꧁❁{name}❁꧂", converter: "fullwidth" },
+      { template: "★Vɪ𝓼𝓲𝓸𝓷✘{name}★", converter: "plain" },
+      { template: "⚡{name}ツ", converter: "fullwidth" }
+    ],
+    special: [
+      { template: "{name}", converter: "fraktur" },
+      { template: "{name}", converter: "circled" },
+      { template: "{name}", converter: "negative_squared" },
+      { template: "👑 {name}👑", converter: "plain" },
+      { template: "▄︻テ {name}══━一💥", converter: "mono" },
+      { template: "ⲯ﹍︿﹍︿﹍ {name}﹍ⲯ﹍ⲯ﹍︿﹍☼", converter: "fraktur" },
+      { template: "▁ ▂ ▄ ▅ ▆ ▇ █ {name} █ ▇ ▆ ▅ ▄ ▂ ▁", converter: "ff_smallcaps" },
+      { template: "✩░▒▓▆▅▃▂▁ {name} ▁▂▃▅▆▓▒░✩", converter: "ff_smallcaps" },
+      { template: "▌│█║▌║▌║ {name} ║▌║▌║█│▌", converter: "mono" },
+      { template: "★彡 {name}彡★", converter: "boldScript" },
+      { template: "♛ {name} ♛", converter: "fullwidth" },
+      { template: "༺🔥 {name} 🔥༻", converter: "fraktur" },
+      { template: "░▒▓█►─═ {name} ═─◄█▓▒░", converter: "squared" },
+      { template: "☾ {name} ☽ ✧", converter: "boldFraktur" },
+      { template: "𓆩 {name}𓆪", converter: "bubble" },
+      { template: "꧁𓊈𒆜 {name} 𒆜𓊉꧂", converter: "boldItalic" },
+      { template: "▀▄▀▄▀▄ {name} ▄▀▄▀▄▀", converter: "ff_smallcaps" },
+      { template: "{name}", converter: "bubble" },
+      { template: "{name}", converter: "boldFraktur" },
+      { template: "{name}", converter: "boldScript" },
+      { template: "꧁✩ {name} ✩꧂", converter: "boldScript" },
+      { template: "{name}", converter: "squared" },
+      { template: "꧁💫 {name} 💫꧂", converter: "boldScript" },
+      { template: "{name}", converter: "doubleStruck" },
+      { template: "{name}", converter: "sansBold" },
+      { template: "{name}", converter: "fullwidth" },
+      { template: "{name}", converter: "bold" },
+      { template: "{name}", converter: "italic" }
+    ]
+  };
+
+  let currentStylerTab = 'love';
+  const stylerInput = $('stylerInput');
+  const stylerResults = $('stylerResults');
+
+  function renderStyler() {
+    if (!stylerInput || !stylerResults) return;
+    
+    let name = stylerInput.value.trim() || "Your Name";
+    const templates = STYLE_TEMPLATES[currentStylerTab] || STYLE_TEMPLATES.love;
+    let html = '';
+
+    templates.forEach(item => {
+      // নাম কনভার্ট করা
+      const convertedName = convertText(name, item.converter);
+      // টেমপ্লেটে বসানো
+      const styledText = item.template.replace(/{name}/g, convertedName);
+      
+      const safeTextForHtml = esc(styledText);
+      const safeTextForAttr = esc(styledText).replace(/&#39;/g, "\\'");
+
+      html += `
+        <div class="styler-item">
+          <div class="styler-text">${safeTextForHtml}</div>
+          <button class="styler-copy-btn" data-copy="${safeTextForAttr}" title="Copy">📋</button>
+        </div>
+      `;
+    });
+
+    stylerResults.innerHTML = html;
+
+    // Copy Button Event
+    stylerResults.querySelectorAll('.styler-copy-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const txt = this.dataset.copy.replace(/\\'/g, "'");
+        copyUniversal(txt, this, '✅');
+        haptic(20);
+        this.classList.add('copied');
+        setTimeout(() => this.classList.remove('copied'), 1500);
+      });
+    });
+  }
+
+  // Input Event
+  if (stylerInput) {
+    stylerInput.addEventListener('input', renderStyler);
+    // Initial render with default "Your Name"
+    renderStyler(); 
+  }
+
+  // Tab Event
+  const stylerTabs = document.querySelectorAll('#stylerTabs .ft-btn');
+  stylerTabs.forEach(btn => {
+    btn.addEventListener('click', function() {
+      stylerTabs.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      currentStylerTab = this.dataset.tab;
+      renderStyler();
+      haptic(12);
+    });
+  });
+
   setTimeout(() => {
     attachRippleAll('.btn');
     attachRippleAll('.dl-btn');
@@ -1475,4 +1750,4 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 </body>
-</html>
+  </html>
