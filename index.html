@@ -60,7 +60,6 @@ input,textarea{-webkit-user-select:text;user-select:text}
   stroke-dashoffset: 100; 
   opacity: 1; 
   
-  /* একদম পারফেক্ট ট্রু সিমলেস ইনফিনিট লুপ */
   animation: trueSeamlessLoop 5s linear infinite;
 }
 
@@ -69,31 +68,11 @@ input,textarea{-webkit-user-select:text;user-select:text}
 }
 
 @keyframes trueSeamlessLoop {
-  0% {
-    stroke-dashoffset: 100;
-    stroke: #FF1A00;
-    fill-opacity: 0;
-  }
-  50% {
-    stroke-dashoffset: 0;
-    stroke: #FFA500;
-    fill-opacity: 0;
-  }
-  70% {
-    stroke-dashoffset: 0;
-    stroke: #FFD700;
-    fill-opacity: 1;
-  }
-  90% {
-    stroke-dashoffset: 0;
-    stroke: #FFD700;
-    fill-opacity: 1;
-  }
-  100% {
-    stroke-dashoffset: 100;
-    stroke: #FF1A00;
-    fill-opacity: 0;
-  }
+  0% { stroke-dashoffset: 100; stroke: #FF1A00; fill-opacity: 0; }
+  50% { stroke-dashoffset: 0; stroke: #FFA500; fill-opacity: 0; }
+  70% { stroke-dashoffset: 0; stroke: #FFD700; fill-opacity: 1; }
+  90% { stroke-dashoffset: 0; stroke: #FFD700; fill-opacity: 1; }
+  100% { stroke-dashoffset: 100; stroke: #FF1A00; fill-opacity: 0; }
 }
 
 @keyframes pulseGlow {
@@ -401,6 +380,99 @@ footer b{color:var(--gold)}
   .fav-btn{right:46px;width:32px;height:32px}
   .dl-tag{font-size:8.5px;padding:3px 9px}
 }
+
+/* ═══ DYNAMIC LIVE TOAST STYLES ═══ */
+.live-toast-wrap {
+  position: fixed;
+  bottom: 24px;
+  left: 20px;
+  z-index: 9999;
+  pointer-events: none;
+  perspective: 1000px;
+}
+
+.toast-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(12, 6, 20, 0.92);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 12px 18px 12px 14px;
+  border-radius: 16px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.85), 
+              0 0 25px rgba(255, 215, 0, 0.2);
+  transform: translateY(120px) scale(0.9) rotateX(-20deg);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.toast-card.show {
+  transform: translateY(0) scale(1) rotateX(0deg);
+  opacity: 1;
+}
+
+.toast-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #CC0000, #FF1A00);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(255, 26, 0, 0.6);
+  border: 2px solid #050208;
+}
+
+.toast-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toast-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toast-title #toastUser {
+  color: #FFD700;
+  font-weight: 800;
+}
+
+.toast-location {
+  font-size: 11.5px;
+  color: #948AA8;
+  font-weight: 600;
+}
+
+.toast-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  color: #F6F1FF;
+  line-height: 1.35;
+}
+
+.toast-time {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  color: #00D4FF;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+@media (max-width: 480px) {
+  .live-toast-wrap { left: 12px; right: 12px; bottom: 16px; }
+  .toast-card { width: 100%; box-sizing: border-box; }
+}
 </style>
 </head>
 
@@ -682,6 +754,21 @@ footer b{color:var(--gold)}
       <i class="fa-solid fa-download"></i> <span id="dlPopupBtnText">DOWNLOAD</span>
     </button>
     <button class="dl-popup-close" id="dlPopupCloseBtn">✕ Close</button>
+  </div>
+</div>
+
+<!-- ═══ LIVE TOAST CONTAINER (NEW) ═══ -->
+<div class="live-toast-wrap">
+  <div class="toast-card" id="toastCard">
+    <div class="toast-avatar" id="toastAvatar">🔥</div>
+    <div class="toast-info">
+      <div class="toast-title">
+        <span id="toastUser">SM SHAKIB</span> 
+        <span class="toast-location" id="toastLoc">(Magura)</span>
+      </div>
+      <div class="toast-desc" id="toastMessage">Downloaded Free Headshot Config!</div>
+      <div class="toast-time" id="toastTime">Just now</div>
+    </div>
   </div>
 </div>
 
@@ -1565,6 +1652,7 @@ document.addEventListener('DOMContentLoaded', function () {
   $('pwdCopyBtn').addEventListener('click', copyPassword);
   $('dlPopup').addEventListener('click', e => { if (e.target.id === 'dlPopup') closeDlPopup(); });
 
+  // ═══ STYLISH NAME GENERATOR LOGIC ═══
   const FONTS = {
     bold: "𝐀𝐁𝐂𝐃𝐄𝐅𝐆𝐇𝐈𝐉𝐊𝐋𝐌𝐍𝐎𝐏𝐐𝐑𝐒𝐓𝐔𝐕𝐖𝐗𝐘𝐙𝐚𝐛𝐜𝐝𝐞𝐟𝐠𝐡𝐢𝐣𝐤𝐥𝐦𝐧𝐨𝐩𝐪𝐫𝐬𝐭𝐮𝐯𝐰𝐱𝐲𝐳",
     italic: "𝐴𝐵𝐶𝐷𝐸𝐹𝐺𝐻𝐼𝐽𝐾𝐿𝑀𝑁𝑂𝑃𝑄𝑅𝑆𝑇𝑈𝑉𝑊𝑋𝑌𝑍𝑎𝑏𝑐𝑑𝑒𝑓𝑔ℎ𝑖𝑗𝑘𝑙𝑚𝑛𝑜𝑝𝑞𝑟𝑠𝑡𝑢𝑣𝑤𝑥𝑦𝑧",
@@ -1573,17 +1661,17 @@ document.addEventListener('DOMContentLoaded', function () {
     boldScript: "𝓐𝓑𝓒𝓓𝓔𝓕𝓖𝓗𝓘𝓙𝓚𝓛𝓜𝓝𝓞𝓟𝓠𝓡𝓢𝓣𝓤𝓥𝓦𝓧𝓨𝓩𝓪𝓫𝓬𝓭𝓮𝓯𝓰𝓱𝓲𝓳𝓴𝓵𝓶𝓷𝓸𝓹𝓺𝓻𝓼𝓽𝓾𝓿𝔀𝔁𝔂𝔃",
     fraktur: "𝔄𝔅ℭ𝔇𝔈𝔉𝔊ℌℑ𝔍𝔎𝔏𝔐𝔑𝔒𝔓𝔔ℜ𝔖𝔗𝔘𝔙𝔚𝔛𝔜ℨ𝔞𝔟𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔷",
     doubleStruck: "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝕔𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫",
-    sansBold: "𝗔𝗕𝗖𝗗𝗘𝗙𝗚𝗛𝗜𝗝𝗞𝗟𝗠𝗡𝗢𝗣𝗤𝗥𝗦𝗧𝗨𝗩𝗪𝗫𝗬𝗭𝗮𝗯𝗰𝗱𝗲𝗳𝗴𝗵𝗶𝐣𝗸𝗹𝗺𝗻𝗼𝗽𝗾𝗿𝘀𝘁𝘂𝘃𝘄𝘅𝘆𝘇",
-    sansItalic: "𝘈𝘉𝘊𝘋𝘌𝘍𝘎𝘏𝘐𝘑𝘒𝘓𝘔𝘕𝘖𝘗𝘘𝘙𝘚𝘛𝘜𝘝𝘞𝘟𝘠𝘡𝘢𝘣𝘤𝘥𝘦𝘧𝘨𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝙤𝙥𝙲𝘳𝙨𝙩𝘂𝙫𝙬𝙭𝘺𝙯",
-    sansBoldItalic: "𝘼𝘽𝘾𝘿𝙀𝙁𝙂𝙃𝙄𝙅𝙆𝙇𝙈𝙉𝙊𝙋𝙌𝙍𝙎𝙏𝙐𝙑𝙒𝙓𝙔𝙕𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞ｊ𝙠𝙡𝙢𝙣𝙤𝙥𝙦𝙧𝙨𝙩𝚞𝙫𝙬𝙭𝙮𝙯",
+    sansBold: "𝗔𝗕𝗖𝗗𝗘𝗙𝗚𝗛𝗜𝗝𝗞𝗟𝗠𝗡𝗢𝗣𝗤𝗥𝗦𝗧𝗨𝗩𝗪𝗫𝗬𝗭𝗮𝗯𝗰𝗱𝗲𝗳𝗴𝗵𝗶𝗷𝗸𝗹𝗺𝗻𝗼𝗽𝗾𝗿𝘀𝘁𝘂𝘃𝘄𝘅𝘆𝘇",
+    sansItalic: "𝘈𝘉𝘊𝘋𝘌𝘍𝘎𝘏𝘐𝘑𝘒𝘓𝘔𝘕𝘖𝘗𝘘𝘙𝘚𝘛𝘜𝘝𝘞𝘟𝘠𝘡𝘢𝘣𝘤𝘥𝘦𝘧𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘲𝘳𝘴𝘵𝘶𝘷𝘸𝘹𝘺𝘻",
+    sansBoldItalic: "𝘼𝘽𝘾𝘿𝙀𝙁𝙂𝙃𝙄𝙅𝙆𝙇𝙈𝙉𝙊𝙋𝙌𝙍𝙎𝙏𝙐𝙑𝙒𝙓𝙔𝙕𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝙤𝙥𝙦𝙧𝙨𝙩𝙪𝙫𝙬𝙭𝙮𝙯",
     mono: "𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝚊𝚋𝚌𝚍𝚎𝚏𝚐𝚑𝚒𝚓𝚔𝚕𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣",
-    fullwidth: "ＡＢＣＤＥＦＧＨＩＪＫＬMNOPQRSTUVWXYZａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ",
+    fullwidth: "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ",
     circled: "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ",
     bubble: "🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩",
     squared: "🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉",
     negative_squared: "🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉",
-    boldFraktur: "𝕬𝕭𝕮𝕯𝕰𝕱𝕲𝕳𝕴𝕵𝕶𝕷𝕸𝕹𝕺𝕻𝕼𝕽𝕾𝕿𝖀𝖁𝖂𝖃𝖄𝖅𝖆𝖇𝖈𝖉𝖊𝖋𝖌𝖍𝖎𝙟𝖐𝖑𝖒𝖓𝖔𝖕𝖖𝖗𝖘𝖙𝖚𝖛𝖜𝖝𝖞𝖟",
-    ff_smallcaps: "ᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴ𝑜ᴘǫʀsᴛᴜᴠᴡxʏᴢᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢ"
+    boldFraktur: "𝕬𝕭𝕮𝕯𝕰𝕱𝕲𝕳𝕴𝕵𝕶𝕷𝕸𝕹𝕺𝕻𝕼𝕽𝕾𝕿𝖀𝖁𝖂𝖃𝖄𝖅𝖆𝖇𝖈𝖉𝖊𝖋𝖌𝖍𝖎𝖏𝖐𝖑𝖒𝖓𝖔𝖕𝖖𝖗𝖘𝖙𝖚𝖛𝖜𝖝𝖞𝖟",
+    ff_smallcaps: "ᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢ"
   };
 
   const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -1620,7 +1708,7 @@ document.addEventListener('DOMContentLoaded', function () {
       { template: "ღ(◕‿◕｡)ღ {name}", converter: "plain" },
       { template: "♡ෆ꒰ঌ {name} ໒꒱ෆ♡", converter: "plain" },
       { template: "✧♥︎✧ {name} ✧♥︎✧", converter: "plain" },
-      { template: "♥💖 {name} 💖♥", converter: "plain" },
+      { template: "♥︎︎💖 {name} 💖♥︎︎", converter: "plain" },
       { template: "꧁𓆩♡𓆪꧂ {name} ꧁𓆩♡𓆪꧂", converter: "plain" },
       { template: "ﮩ٨ـﮩﮩ٨ـ {name}ﮩ٨ـﮩﮩ٨ـ", converter: "boldItalic" },
       { template: "︵‿୨ {name}୧‿︵", converter: "boldScript" },
@@ -1822,6 +1910,90 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }, 30000);
 });
+
+// ═══ DYNAMIC FIREBASE INTEGRATED TOAST ENGINE ═══
+(function initDynamicSmartNotifications() {
+  const userProfiles = [
+    { name: "SM SHAKIB", loc: "Magura", icon: "👑" },
+    { name: "Tanvir Boss", loc: "Khulna", icon: "🔥" },
+    { name: "Sabbir Ahmed", loc: "Dhaka", icon: "💎" },
+    { name: "Rakib Pro", loc: "Jessore", icon: "⚡" },
+    { name: "Imran Gamer", loc: "Chittagong", icon: "🎯" },
+    { name: "Fahim King", loc: "Rajshahi", icon: "🏆" },
+    { name: "Carlos FF", loc: "Brazil", icon: "🚀" },
+    { name: "Arian Legend", loc: "Sylhet", icon: "🥇" },
+    { name: "Alex FF", loc: "Mexico", icon: "🔮" },
+    { name: "Mahir Ahmed", loc: "Barishal", icon: "✨" },
+    { name: "Kavya Pro", loc: "India", icon: "💥" },
+    { name: "Nayeem Official", loc: "Bogura", icon: "🔱" },
+    { name: "Rayhan Gamer", loc: "Comilla", icon: "🎮" },
+    { name: "Lucas Gamer", loc: "Indonesia", icon: "⚡" },
+    { name: "Siam YT", loc: "Mymensingh", icon: "🔥" },
+    { name: "Alamin Pro", loc: "Gazipur", icon: "💎" },
+    { name: "Gabriel FF", loc: "Colombia", icon: "🎯" },
+    { name: "Emon Khan", loc: "Rangpur", icon: "👑" },
+    { name: "Shuvo Official", loc: "Kushtia", icon: "🥇" },
+    { name: "Mateo Pro", loc: "Spain", icon: "🚀" }
+  ];
+
+  const timeLabels = ["Just now", "1 min ago", "2 mins ago", "3 mins ago", "5 mins ago"];
+
+  function triggerDynamicToast() {
+    const card = document.getElementById('toastCard');
+    if (!card) return;
+
+    const randomUser = userProfiles[Math.floor(Math.random() * userProfiles.length)];
+    const randomTime = timeLabels[Math.floor(Math.random() * timeLabels.length)];
+
+    let actionText = "";
+    let actionIcon = randomUser.icon;
+
+    // Firebase ALL_DOWNLOADS integration
+    if (typeof ALL_DOWNLOADS !== 'undefined' && Array.isArray(ALL_DOWNLOADS) && ALL_DOWNLOADS.length > 0) {
+      const activeFiles = ALL_DOWNLOADS.filter(item => item.enabled !== false);
+      
+      if (activeFiles.length > 0) {
+        const randomFile = activeFiles[Math.floor(Math.random() * activeFiles.length)];
+        const fileName = randomFile.name || "VIP Config File";
+        const cat = (randomFile.category || 'free').toLowerCase();
+
+        if (cat === 'paid') {
+          actionText = `Ordered Premium: <b style="color:#FFD700;">${fileName}</b>`;
+          actionIcon = "💎";
+        } else {
+          actionText = `Downloaded: <b style="color:#00D4FF;">${fileName}</b>`;
+          actionIcon = "📥";
+        }
+      }
+    } 
+    
+    if (!actionText) {
+      const defaultActions = [
+        `Calculated Headshot Sensitivity!`,
+        `Generated Stylish Gaming Tag!`,
+        `Ordered VIP Sensitivity Preset!`,
+        `Applied Custom Touch HUD Layout!`
+      ];
+      actionText = defaultActions[Math.floor(Math.random() * defaultActions.length)];
+    }
+
+    document.getElementById('toastUser').textContent = randomUser.name;
+    document.getElementById('toastLoc').textContent = `(${randomUser.loc})`;
+    document.getElementById('toastMessage').innerHTML = actionText;
+    document.getElementById('toastAvatar').textContent = actionIcon;
+    document.getElementById('toastTime').textContent = randomTime;
+
+    card.classList.add('show');
+
+    setTimeout(() => {
+      card.classList.remove('show');
+    }, 4000);
+  }
+
+  setTimeout(triggerDynamicToast, 3000);
+  setInterval(triggerDynamicToast, 10000);
+
+})();
 </script>
 
 </body>
