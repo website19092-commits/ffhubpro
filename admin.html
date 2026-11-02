@@ -633,8 +633,7 @@ try {
   console.log('✅ Firebase connected');
 } catch(e) { console.error('❌ Firebase init failed:', e); }
 
-const ADMIN_KEY = 'SHAKIB19092ADMIN';
-const ADMIN_SESSION_KEY = 'ffhub_admin_session';
+const ADMIN_EMAIL = 'admin@ffhubpro.local';
 
 function showToast(msg, type = '') {
   const box = $('toastBox');
@@ -660,23 +659,45 @@ function formatDate(ts) {
   return d.toLocaleString('en-GB', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', hour12:true });
 }
 
-function doAdminLogin() {
+async function doAdminLogin() {
   const input = $('adminPass');
-  const val = (input.value || '').trim();
-  if (!val) { showToast('❌ পাসওয়ার্ড দিন'); input.focus(); return; }
-  if (val !== ADMIN_KEY) { showToast('❌ ভুল পাসওয়ার্ড'); input.value = ''; input.focus(); return; }
-  try { localStorage.setItem(ADMIN_SESSION_KEY, '1'); } catch(e) {}
-  input.value = '';
-  showToast('✅ স্বাগতম Admin!', 'ok');
-  openAdmin();
+  const btn = $('adminLoginBtn');
+  const password = (input.value || '').trim();
+  
+  if (!password) { showToast('❌ পাসওয়ার্ড দিন'); input.focus(); return; }
+  
+  btn.disabled = true;
+  btn.textContent = '⏳ Checking...';
+  
+  try {
+    await firebase.auth().signInWithEmailAndPassword(ADMIN_EMAIL, password);
+    input.value = '';
+    showToast('✅ স্বাগতম Admin!', 'ok');
+    openAdmin();
+  } catch (error) {
+    showToast('❌ ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।');
+    input.value = '';
+    input.focus();
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'ENTER PANEL';
+  }
 }
+
 function doAdminLogout() {
-  try { localStorage.removeItem(ADMIN_SESSION_KEY); } catch(e) {}
-  $('adminApp').classList.add('hidden');
-  $('loginScreen').classList.remove('hidden');
-  setTimeout(() => $('adminPass').focus(), 200);
-  showToast('👋 Logout হয়েছে', 'info');
+  firebase.auth().signOut().then(() => {
+    $('adminApp').classList.add('hidden');
+    $('loginScreen').classList.remove('hidden');
+    setTimeout(() => $('adminPass').focus(), 200);
+    showToast('👋 Logout হয়েছে', 'info');
+  });
 }
+
+function isLoggedIn() {
+  const user = firebase.auth().currentUser;
+  return user && user.email === ADMIN_EMAIL;
+}
+
 function openAdmin() {
   $('loginScreen').classList.add('hidden');
   $('adminApp').classList.remove('hidden');
@@ -684,9 +705,6 @@ function openAdmin() {
   setTimeout(loadDashboardStats, 300);
   setTimeout(loadSettingsToForms, 300);
   setTimeout(loadMediaPreviews, 300);
-}
-function isLoggedIn() {
-  try { return localStorage.getItem(ADMIN_SESSION_KEY) === '1'; } catch(e) { return false; }
 }
 
 function openSidebar() { $('sidebar').classList.add('open'); $('scrim').classList.add('open'); }
@@ -1306,8 +1324,17 @@ function saveSiteSettings() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  if (isLoggedIn()) openAdmin();
-  else setTimeout(() => $('adminPass').focus(), 300);
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user && user.email === ADMIN_EMAIL) {
+      $('loginScreen').classList.add('hidden');
+      $('adminApp').classList.remove('hidden');
+      setTimeout(() => { loadDashboardStats(); loadSettingsToForms(); loadMediaPreviews(); }, 300);
+    } else {
+      $('adminApp').classList.add('hidden');
+      $('loginScreen').classList.remove('hidden');
+      setTimeout(() => { if ($('adminPass')) $('adminPass').focus(); }, 300);
+    }
+  });
 
   $('adminLoginBtn').addEventListener('click', doAdminLogin);
   $('adminPass').addEventListener('keydown', e => { if (e.key === 'Enter') doAdminLogin(); });
