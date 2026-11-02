@@ -2397,11 +2397,15 @@ function handleDownloadClick(key) {
 
 
   const copyBtn = $('pwdCopyBtn');
+copyBtn.classList.remove('copied');
+copyBtn.textContent = '📋 Copy';
 
-  copyBtn.classList.remove('copied');
-
-  copyBtn.textContent = '📋 Copy';
-
+// 👈 নতুন লজিক: পাসওয়ার্ড না থাকলে কপি বাটন লুকিয়ে ফেলবে
+if (pwd) {
+  copyBtn.style.display = 'inline-block';
+} else {
+  copyBtn.style.display = 'none';
+}
 
 
   $('dlPopupBtnText').textContent = item.name ? item.name.substring(0, 30) : 'DOWNLOAD';
@@ -3826,8 +3830,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-
-
 // ═══ DYNAMIC FIREBASE INTEGRATED TOAST ENGINE ═══
 
 const toastUserProfiles = [
@@ -4036,8 +4038,5 @@ function stopToastEngine() {
 
 </script>
 
-
-
 </body>
-
 </html>
