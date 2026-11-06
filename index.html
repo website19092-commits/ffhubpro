@@ -46,6 +46,7 @@ input, textarea { -webkit-user-select:text; user-select:text; }
   font-family:'Orbitron',sans-serif; font-size:24px; font-weight:900; letter-spacing:1px;
   fill:url(#headerGradient); fill-opacity:0; stroke:#FF1A00; stroke-width:1.2px;
   stroke-dasharray:100; stroke-dashoffset:100; opacity:1;
+  will-change: stroke-dashoffset, fill-opacity;
   animation:trueSeamlessLoop 5s linear infinite;
 }
 .header-glow { animation:pulseGlow 2s ease-in-out infinite alternate; }
@@ -434,6 +435,12 @@ select.input option { background:#0E0716; color:#fff; }
 .ad-body .ad-title { font-family:var(--font-b); font-weight:700; font-size:15px; color:var(--gold); text-align:center; padding:6px; }
 .ad-body .ad-empty { font-family:var(--font-t); font-size:11px; color:#4A4458; letter-spacing:1px; }
 
+/* অ্যাড স্পেসের অতিরিক্ত ফাঁকা জায়গা কমানোর ফিক্স */
+.dl-list .ad-slot {
+  margin: 0 !important; 
+  min-height: 70px;
+}
+
 /* ═══════════ SOCIAL ═══════════ */
 .social-list { display:flex; flex-direction:column; gap:11px; }
 .social-btn { display:flex; align-items:center; justify-content:center; gap:10px; padding:15px; border-radius:14px; cursor:pointer; font-family:var(--font-b); font-weight:700; font-size:16px; letter-spacing:.4px; color:#fff; transition:transform .14s; }
@@ -507,27 +514,109 @@ footer b { color:var(--gold); }
   .dl-tag { font-size:8.5px; padding:3px 9px; }
 }
 
-/* ═══════════ LIVE TOAST ═══════════ */
-.live-toast-wrap { position:fixed; bottom:24px; left:20px; z-index:9999; pointer-events:none; perspective:1000px; }
-.toast-card {
-  display:flex; align-items:center; gap:12px; background:rgba(12,6,20,.92);
-  border:1px solid rgba(255,215,0,.4); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-  padding:12px 18px 12px 14px; border-radius:16px;
-  box-shadow:0 12px 35px rgba(0,0,0,.85), 0 0 25px rgba(255,215,0,.2);
-  transform:translateY(120px) scale(.9) rotateX(-20deg); opacity:0;
-  transition:all .5s cubic-bezier(.175,.885,.32,1.275);
+/* ═══════════ LIVE TOAST (Centered & Small) ═══════════ */
+.live-toast-wrap { 
+  position: fixed; 
+  bottom: 20px; 
+  left: 0; 
+  right: 0; /* ডান এবং বাম ০ করে দিলাম */
+  display: flex; 
+  justify-content: center; /* এটা দিলে একদম মাঝখানে আসবে */
+  z-index: 9999; 
+  pointer-events: none; 
+  perspective: 1000px; 
 }
-.toast-card.show { transform:translateY(0) scale(1) rotateX(0deg); opacity:1; }
-.toast-avatar { width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#CC0000,#FF1A00); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; box-shadow:0 0 16px rgba(255,26,0,.6); border:2px solid #050208; }
-.toast-info { display:flex; flex-direction:column; gap:2px; }
-.toast-title { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:15px; color:#fff; display:flex; align-items:center; gap:6px; }
-.toast-title #toastUser { color:#FFD700; font-weight:800; }
-.toast-location { font-size:11.5px; color:#948AA8; font-weight:600; }
-.toast-desc { font-family:'Inter',sans-serif; font-size:12.5px; color:#F6F1FF; line-height:1.35; }
-.toast-time { font-family:'Rajdhani',sans-serif; font-size:11px; color:#00D4FF; font-weight:700; margin-top:2px; }
-@media (max-width:480px) {
-  .live-toast-wrap { left:12px; right:12px; bottom:16px; }
-  .toast-card { width:100%; box-sizing:border-box; }
+
+.toast-card {
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  background: rgba(12, 6, 20, 0.92);
+  border: 1px solid rgba(255, 215, 0, 0.4); 
+  backdrop-filter: blur(16px); 
+  -webkit-backdrop-filter: blur(16px);
+  padding: 8px 12px 8px 10px; 
+  border-radius: 12px; 
+  box-shadow: 0 8px 25px rgba(0, 0, 0, .85), 0 0 15px rgba(255, 215, 0, 0.2);
+  transform: translateY(120px) scale(.9) rotateX(-20deg); 
+  opacity: 0;
+  transition: all .5s cubic-bezier(.175, .885, .32, 1.275);
+  width: max-content; /* লেখা অনুযায়ী সাইজ হবে */
+  max-width: 85%; /* স্ক্রিনের বাইরে যাবে না */
+}
+
+.toast-card.show { 
+  transform: translateY(0) scale(1) rotateX(0deg); 
+  opacity: 1; 
+}
+
+/* আইকন ছোট করা হয়েছে */
+.toast-avatar { 
+  width: 34px; 
+  height: 34px; 
+  border-radius: 50%; 
+  background: linear-gradient(135deg, #CC0000, #FF1A00); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 16px; 
+  flex-shrink: 0; 
+  box-shadow: 0 0 10px rgba(255, 26, 0, .6); 
+  border: 2px solid #050208; 
+}
+
+.toast-info { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 1px; 
+}
+
+/* লেখার সাইজ ছোট */
+.toast-title { 
+  font-family: 'Rajdhani', sans-serif; 
+  font-weight: 700; 
+  font-size: 13px; 
+  color: #fff; 
+  display: flex; 
+  align-items: center; 
+  gap: 4px; 
+}
+
+.toast-title #toastUser { 
+  color: #FFD700; 
+  font-weight: 800; 
+}
+
+.toast-location { 
+  font-size: 10px; 
+  color: #948AA8; 
+  font-weight: 600; 
+}
+
+.toast-desc { 
+  font-family: 'Inter', sans-serif; 
+  font-size: 11px; 
+  color: #F6F1FF; 
+  line-height: 1.35; 
+  margin-top: 2px;
+}
+
+.toast-time { 
+  font-family: 'Rajdhani', sans-serif; 
+  font-size: 9px; 
+  color: #00D4FF; 
+  font-weight: 700; 
+  margin-top: 2px; 
+}
+
+/* মোবাইলের জন্য রেসপন্সিভ */
+@media (max-width: 480px) {
+  .live-toast-wrap { 
+    bottom: 16px; 
+  }
+  .toast-card { 
+    max-width: 90%; 
+  }
 }
 </style>
 </head>
@@ -917,12 +1006,6 @@ function smoothScrollTo(el) {
   window.scrollTo({ top: y, behavior: 'smooth' });
 }
 function haptic(ms) { try { if (navigator.vibrate) navigator.vibrate(ms || 12); } catch (e) {} }
-function hapticTap(el) {
-  if (!el) return;
-  el.classList.add('haptic-tap');
-  setTimeout(() => el.classList.remove('haptic-tap'), 200);
-  haptic(12);
-}
 function fireConfetti(count) {
   count = count || 60;
   const layer = document.createElement('div');
@@ -1188,7 +1271,7 @@ function renderFreeList() {
   }
 
   let html = '';
-  items.forEach((item, idx) => {
+  items.forEach((item) => {
     const clicks = Number(item.clicks) || 0;
     const isFav = isFavorite(item._key);
     const isHot = TRENDING_KEYS.indexOf(item._key) !== -1;
@@ -1211,10 +1294,14 @@ function renderFreeList() {
       </button>
       <button class="fav-btn ${isFav ? 'on' : ''}" data-fav-key="${esc(item._key)}" aria-label="favorite">${isFav ? '❤️' : '♡'}</button>
     </div>`;
-    if ((idx + 1) % 5 === 0) {
-      html += `<div class="ad-slot" data-slot="free-${idx + 1}"><span class="ad-label">Advertisement</span><div class="ad-body"><span class="ad-empty">Ad Space</span></div></div>`;
-    }
   });
+
+  // এখানে অ্যাড স্পেস যোগ করা হলো (সব ফাইলের শেষে, Join our community-র আগে)
+  html += `<div class="ad-slot" data-slot="free-bottom" style="margin-top: 10px;">
+    <span class="ad-label">Advertisement</span>
+    <div class="ad-body"><span class="ad-empty">Ad Space</span></div>
+  </div>`;
+
   wrap.innerHTML = html;
 
   wrap.querySelectorAll('.dl-btn').forEach(b => {
@@ -1326,23 +1413,47 @@ function loadAds() {
   });
 }
 
-/* ─────── MY ORDERS ─────── */
+/* ─────── MY ORDERS (With Notifications) ─────── */
+let lastOrderStatuses = {}; // স্ট্যাটাস ট্র্যাক করার জন্য
 function loadMyOrders() {
   const sec = $('myOrdersSection');
   const box = $('myOrdersList');
   if (!db || !sec || !box) return;
   const username = getSavedUser();
   if (!username) { sec.classList.add('hidden'); return; }
+  
   db.ref('orders').orderByChild('username').equalTo(username).on('value', snap => {
     const data = snap.val() || {};
     const arr = Object.keys(data).map(k => Object.assign({ _key: k }, data[k]));
+    
+    // 🔔 লাইভ নোটিফিকেশন লজিক
+    arr.forEach(o => {
+      if (lastOrderStatuses[o._key] && lastOrderStatuses[o._key] !== o.status) {
+        if (o.status === 'approved') {
+          showToast('✅ আপনার অর্ডারটি অ্যাপ্রুভ হয়েছে! নিচে কোড দেখুন।', 'ok');
+          fireConfetti(50);
+          haptic(30);
+        } else if (o.status === 'rejected') {
+          showToast('❌ আপনার অর্ডারটি রিজেক্ট হয়েছে!');
+        }
+      }
+      lastOrderStatuses[o._key] = o.status; // আপডেট করে রাখা
+    });
+
     arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
     if (!arr.length) { sec.classList.add('hidden'); if ($('statOrderCount')) $('statOrderCount').textContent = 0; return; }
     if ($('statOrderCount')) $('statOrderCount').textContent = arr.length;
     sec.classList.remove('hidden');
+    
     box.innerHTML = arr.slice(0, 5).map(o => {
       const status = o.status || 'pending';
       const dt = o.createdAt ? new Date(o.createdAt).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }) : '—';
+      
+      // ✅ অ্যাডমিন যে কোড দিয়েছে সেটা ডিসপ্লে করা
+      const sensiCode = status === 'approved' && o.sensitivityCode 
+        ? `<div style="margin-top:8px;padding:10px;background:rgba(0,204,85,.1);border:1px solid rgba(0,204,85,.3);border-radius:8px;font-size:12.5px;color:#33DD77;white-space:pre-wrap;text-align:left;font-family:monospace;line-height:1.5">${esc(o.sensitivityCode)}</div>` 
+        : '';
+
       return `<div class="my-order ${status}">
         <div class="mo-top">
           <span class="mo-model">📱 ${esc(o.model || 'Order')}</span>
@@ -1354,6 +1465,7 @@ function loadMyOrders() {
           <span>🆔 ${esc((o.trxId || '').substring(0, 10))}${(o.trxId || '').length > 10 ? '...' : ''}</span>
           <span>📅 ${dt}</span>
         </div>
+        ${sensiCode}
       </div>`;
     }).join('');
   }, err => { console.error('Orders error:', err); });
@@ -1380,17 +1492,48 @@ function doLogout() {
   showScreen('loginScreen');
   setTimeout(() => $('usernameInput').focus(), 300);
 }
+
 function openApp() {
   const name = getSavedUser() || 'Guest';
   $('welcomeUser').textContent = name;
   showScreen('appScreen');
-  loadDownloadsFromFirebase();
-  initBrandDropdown();
-  loadAds();
-  loadSettings();
-  loadMyOrders();
-  updateFavoriteStats();
-  startToastEngine();
+  
+  // 🚫 Banned User Check
+  if (db && getSavedUid()) {
+    db.ref('users/' + getSavedUid()).once('value').then(snap => {
+      const userData = snap.val();
+      if (userData && userData.banned === true) {
+        clearUser();
+        showToast('🚫 আপনি এই সাইট থেকে ব্যান হয়েছেন!');
+        showScreen('loginScreen');
+        return;
+      }
+      loadDownloadsFromFirebase();
+      initBrandDropdown();
+      loadAds();
+      loadSettings();
+      loadMyOrders();
+      updateFavoriteStats();
+      startToastEngine();
+    }).catch(e => {
+      console.error("Banned check failed", e);
+      loadDownloadsFromFirebase();
+      initBrandDropdown();
+      loadAds();
+      loadSettings();
+      loadMyOrders();
+      updateFavoriteStats();
+      startToastEngine();
+    });
+  } else {
+    loadDownloadsFromFirebase();
+    initBrandDropdown();
+    loadAds();
+    loadSettings();
+    loadMyOrders();
+    updateFavoriteStats();
+    startToastEngine();
+  }
 }
 
 /* ─────── CATEGORY TABS ─────── */
@@ -1983,7 +2126,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }, 30000);
 });
 
-/* ═══ LIVE TOAST ENGINE ═══ */
+/* ═══ LIVE TOAST ENGINE (With Real User Fetch) ═══ */
 const toastUserProfiles = [
   { name: "SM SHAKIB", loc: "Magura", icon: "👑" },
   { name: "Tanvir Boss", loc: "Khulna", icon: "🔥" },
@@ -2004,7 +2147,7 @@ const toastUserProfiles = [
   { name: "Gabriel FF", loc: "Colombia", icon: "🎯" },
   { name: "Emon Khan", loc: "Rangpur", icon: "👑" },
   { name: "Shuvo Official", loc: "Kushtia", icon: "🥇" },
-  { name: "Matrix Pro", loc: "Spain", icon: "🚀" }
+  { name: "Mateo Pro", loc: "Spain", icon: "🚀" }
 ];
 const toastTimeLabels = ["Just now", "1 min ago", "2 mins ago", "3 mins ago", "5 mins ago"];
 let toastStartTimeout = null;
@@ -2018,11 +2161,34 @@ function triggerDynamicToast() {
   const card = document.getElementById('toastCard');
   if (!card) return;
 
-  const randomUser = toastUserProfiles[Math.floor(Math.random() * toastUserProfiles.length)];
+  let randomUser = toastUserProfiles[Math.floor(Math.random() * toastUserProfiles.length)];
   const randomTime = toastTimeLabels[Math.floor(Math.random() * toastTimeLabels.length)];
   let actionText = "";
   let actionIcon = randomUser.icon;
 
+  // ডাটাবেস থেকে আসল ৩০ জন ইউজারের নাম নেওয়ার চেষ্টা করবে
+  if (db) {
+    db.ref('users').limitToLast(30).once('value').then(snap => {
+      const users = snap.val() || {};
+      const userArr = Object.values(users).filter(u => u.username);
+      
+      if (userArr.length > 0) {
+        // ৫০% চান্স আসল ইউজারের নাম আসবে, ৫০% ফেক নাম আসবে
+        if (Math.random() > 0.5) {
+          const realUser = userArr[Math.floor(Math.random() * userArr.length)];
+          randomUser = { name: realUser.username, loc: 'Verified User', icon: '✅' };
+        }
+      }
+      showToastCard(randomUser, randomTime, actionText, actionIcon, card);
+    }).catch(() => {
+      showToastCard(randomUser, randomTime, actionText, actionIcon, card);
+    });
+  } else {
+    showToastCard(randomUser, randomTime, actionText, actionIcon, card);
+  }
+}
+
+function showToastCard(randomUser, randomTime, actionText, actionIcon, card) {
   if (typeof ALL_DOWNLOADS !== 'undefined' && Array.isArray(ALL_DOWNLOADS) && ALL_DOWNLOADS.length > 0) {
     const activeFiles = ALL_DOWNLOADS.filter(item => item.enabled !== false);
     if (activeFiles.length > 0) {
